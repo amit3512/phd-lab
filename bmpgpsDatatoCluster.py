@@ -34,7 +34,7 @@
 #     temp = data.get("temperature")
 #     pressure = data.get("pressure")
 #     timestamp = data.get("timestamp")
-    
+
 #     # Extract GPS Metrics
 #     lat = data.get("latitude")
 #     lon = data.get("longitude")
@@ -68,9 +68,9 @@
 #             if lat is not None and lon is not None:
 #                 point.field("latitude", float(lat))
 #                 point.field("longitude", float(lon))
-#                 if alt is not None: 
+#                 if alt is not None:
 #                     point.field("altitude", float(alt))
-#                 if speed is not None: 
+#                 if speed is not None:
 #                     point.field("speed", float(speed))
 
 #             # Bind the explicit incoming data timestamp into InfluxDB nanoseconds
@@ -107,7 +107,8 @@ from influxdb_client import InfluxDBClient, Point
 from influxdb_client.client.write_api import SYNCHRONOUS
 
 # 1. InfluxDB Configuration pointing to your Kubernetes cluster
-INFLUX_URL = os.getenv("INFLUXDB_URL", "http://172.22.251.21:30086")
+# INFLUX_URL = os.getenv("INFLUXDB_URL", "http://172.22.251.21:30086")
+INFLUX_URL = os.getenv("INFLUXDB_URL", "http://172.22.251.30:30086")
 INFLUX_TOKEN = os.getenv("INFLUXDB_TOKEN", "my-super-secret-admin-token")
 INFLUX_ORG = os.getenv("INFLUXDB_ORG", "iot_edge_research")
 INFLUX_BUCKET = os.getenv("INFLUXDB_BUCKET", "bmp280_metrics")
@@ -125,6 +126,7 @@ except Exception as e:
 BROKER_IP = "0.0.0.0"  # Listens on all interfaces on pi2
 TOPIC = "sensors/pi1/data"
 
+
 def on_message(client, userdata, msg):
     try:
         data = json.loads(msg.payload.decode())
@@ -136,7 +138,7 @@ def on_message(client, userdata, msg):
     temp = data.get("temperature")
     pressure = data.get("pressure")
     timestamp = data.get("timestamp")
-    
+
     # Extract GPS Metrics
     lat = data.get("latitude")
     lon = data.get("longitude")
@@ -179,11 +181,11 @@ def on_message(client, userdata, msg):
                 .field("latitude", float(lat))
                 .field("longitude", float(lon))
             )
-            if alt is not None: 
+            if alt is not None:
                 gps_point.field("altitude", float(alt))
-            if speed is not None: 
+            if speed is not None:
                 gps_point.field("speed", float(speed))
-            
+
             if timestamp is not None:
                 gps_point.time(int(float(timestamp) * 1_000_000_000))
             points_to_write.append(gps_point)
@@ -191,18 +193,20 @@ def on_message(client, userdata, msg):
         # Send both "tables" cleanly in a single batch push to K8s InfluxDB
         if points_to_write:
             try:
-                write_api.write(bucket=INFLUX_BUCKET, org=INFLUX_ORG, record=points_to_write)
-                print(f"   -> Streamed {len(points_to_write)} separate measurements to K8s\n")
+                write_api.write(
+                    bucket=INFLUX_BUCKET, org=INFLUX_ORG, record=points_to_write
+                )
+                print(
+                    f"   -> Streamed {len(points_to_write)} separate measurements to K8s\n"
+                )
             except Exception as e:
                 print(f"   -> Failed writing to InfluxDB: {e}\n")
     else:
         print("   -> Skipped database push (Client offline)\n")
 
+
 # Configure and deploy Paho MQTT Client (v2 API standard)
-client = mqtt.Client(
-    mqtt.CallbackAPIVersion.VERSION2,
-    client_id="collector"
-)
+client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2, client_id="collector")
 client.on_message = on_message
 
 print(f"Connecting to local MQTT broker network...")
