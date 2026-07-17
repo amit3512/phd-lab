@@ -6,48 +6,51 @@ import paho.mqtt.client as mqtt
 
 from kubernetes import client, config
 
-from influxdb_client import InfluxDBClient, Point
-from influxdb_client.client.write_api import SYNCHRONOUS
+# -------------------------
+# Configuration
+# -------------------------
 
-# ================= CONFIGURATION =================
+RYU_URL = "http://127.0.0.1:8080/routing"
 
-INFLUX_TOKEN = "my-super-secret-admin-token"
-INFLUX_ORG = "iot_edge_research"
+KUBECONFIG = "/home/pi/.kube/config"
+
+MQTT_BROKER = "0.0.0.0"
+MQTT_PORT = 1883
+
+INGRESS_NODE_PORT = 32213
 
 
-RYU_CONTROLLER_URL = "http://127.0.0.1:8080/routing"
-
+# -------------------------
+# Global tables
+# -------------------------
 
 service_table = {}
+service_ip_table = {}
+service_port_table = {}
 
 table_lock = threading.Lock()
 
-_influx_client_cache = {}
 
-
-# ================= KUBERNETES =================
+# -------------------------
+# Kubernetes
+# -------------------------
 
 
 def initialize_k8s():
 
     try:
-
-        config.load_kube_config(config_file="/home/pi/.kube/config")
+        config.load_kube_config(config_file=KUBECONFIG)
 
         print("K8s: Local kubeconfig loaded.")
 
     except Exception as e:
-
-        print(f"K8s Init Error: {e}")
+        print("K8s error:", e)
 
 
 def get_service_route(svc, net_v1):
 
     svc_name = svc.metadata.name
-
     namespace = svc.metadata.namespace
-
-    INGRESS_NODE_PORT = 32213
 
     try:
 
@@ -59,7 +62,7 @@ def get_service_route(svc, net_v1):
 
                 for rule in ing.spec.rules:
 
-                    if rule.http and rule.http.paths:
+                    if rule.http:
 
                         for path in rule.http.paths:
 
@@ -76,7 +79,28 @@ def get_service_route(svc, net_v1):
 
     except Exception as e:
 
-        print(f"Ingress error: {e}")
+        print("Ingress error:", e)
+
+    return None
+
+
+def get_endpoint_ip(svc_name, namespace, v1):
+
+    try:
+
+        ep = v1.read_namespaced_endpoints(svc_name, namespace)
+
+        if ep.subsets:
+
+            for subset in ep.subsets:
+
+                if subset.addresses:
+
+                    return subset.addresses[0].ip
+
+    except Exception as e:
+
+        print("Endpoint error:", e)
 
     return None
 
@@ -92,81 +116,75 @@ def refresh_routes():
     with table_lock:
 
         service_table.clear()
+        service_ip_table.clear()
+        service_port_table.clear()
 
         for svc in services.items:
+
+            name = svc.metadata.name
 
             url = get_service_route(svc, net_v1)
 
             if url:
 
-                service_table[svc.metadata.name] = url
+                ip = get_endpoint_ip(name, svc.metadata.namespace, v1)
 
-                print(f"Mapped: {svc.metadata.name}" f" -> {url}")
+                if ip is None:
+                    continue
+
+                service_table[name] = url
+
+                service_ip_table[name] = ip
+
+                if "bmp280" in name:
+
+                    service_port_table[name] = "veth1"
+
+                elif "pa1010d" in name:
+
+                    service_port_table[name] = "veth0"
+
+                print("\nMapped Service:")
+
+                print("Name:", name)
+
+                print("URL:", url)
+
+                print("IP:", ip)
+
+                print("PORT:", service_port_table.get(name))
 
 
-# ================= SDN ROUTING =================
+# -------------------------
+# Ryu REST communication
+# -------------------------
 
 
-def get_output_port(sensor):
-    """
-    Decide OVS output port
-    """
+def send_to_ryu(sensor, destination, destination_ip, output_port):
 
-    if sensor == "bmp280":
+    payload = {
+        "sensor": sensor,
+        "destination": destination,
+        "destination_ip": destination_ip,
+        "output_port": output_port,
+    }
 
-        return "veth1"
-
-    elif sensor == "pa1010d":
-
-        return "veth0"
-
-    else:
-
-        return "veth1"
-
-
-def send_to_ryu(sensor, destination):
-
-    output_port = get_output_port(sensor)
-
-    payload = {"sensor": sensor, "destination": destination, "output_port": output_port}
+    print("Sending to Ryu:", payload)
 
     try:
 
-        response = requests.post(RYU_CONTROLLER_URL, json=payload, timeout=3)
+        response = requests.post(RYU_URL, json=payload, timeout=3)
 
         print("Ryu response:", response.text)
 
     except Exception as e:
 
-        print(f"Ryu error: {e}")
+        print("Ryu error:", e)
 
 
-# ================= INFLUX =================
-
-
-def write_to_influx(url, point, sensor_type):
-
-    if url not in _influx_client_cache:
-
-        client_obj = InfluxDBClient(url=url, token=INFLUX_TOKEN, org=INFLUX_ORG)
-
-        _influx_client_cache[url] = client_obj.write_api(write_options=SYNCHRONOUS)
-
-    try:
-
-        _influx_client_cache[url].write(
-            bucket=f"bucket_{sensor_type}", org=INFLUX_ORG, record=point
-        )
-
-        print(f"Sent {sensor_type} data to {url}")
-
-    except Exception as e:
-
-        print(f"Influx error: {e}")
-
-
-# ================= MQTT =================
+# -------------------------
+# MQTT
+# -------------------------
 
 
 def on_message(client, userdata, msg):
@@ -175,89 +193,78 @@ def on_message(client, userdata, msg):
 
         parts = msg.topic.split("/")
 
-        if len(parts) < 2:
-
+        if len(parts) < 3:
             return
 
-        sensor_key = parts[1]
+        sensor = parts[1]
 
         data = json.loads(msg.payload.decode())
 
-        destination_url = None
+        print("\n======================")
+
+        print("Sensor:", sensor)
+
+        service_name = None
 
         with table_lock:
 
-            for svc_name, url in service_table.items():
+            for svc in service_table:
 
-                if sensor_key in svc_name:
+                if sensor in svc:
 
-                    destination_url = url
+                    service_name = svc
 
                     break
 
-        if destination_url:
+        if service_name is None:
 
-            print("\n======================")
+            print("No service found")
 
-            print("Sensor:", sensor_key)
+            return
 
-            print("Destination:", destination_url)
+        destination = service_table[service_name]
 
-            # Send decision to Ryu
+        destination_ip = service_ip_table[service_name]
 
-            send_to_ryu(sensor_key, destination_url)
+        output_port = service_port_table[service_name]
 
-            point = Point(sensor_key)
+        print("Destination:", destination)
 
-            sensor_type = data.get("service_type", sensor_key)
+        print("Destination IP:", destination_ip)
 
-            for k, v in data.items():
+        print("Output:", output_port)
 
-                if k not in ["service_type", "timestamp"]:
-
-                    try:
-
-                        point.field(k, float(v))
-
-                    except:
-
-                        point.field(k, str(v))
-
-            write_to_influx(destination_url, point, sensor_type)
-
-        else:
-
-            print("No route:", sensor_key)
+        send_to_ryu(sensor, destination, destination_ip, output_port)
 
     except Exception as e:
 
-        print(f"Processing Error: {e}")
+        print("MQTT error:", e)
 
 
-# ================= START =================
-
+# -------------------------
+# Start
+# -------------------------
 
 initialize_k8s()
-
 
 refresh_routes()
 
 
 mqtt_client = mqtt.Client(
-    mqtt.CallbackAPIVersion.VERSION2, client_id="service-aware-routing"
+    mqtt.CallbackAPIVersion.VERSION2, client_id="service-aware-ip-routing"
 )
 
 
 mqtt_client.on_message = on_message
 
 
-mqtt_client.connect("localhost", 1883)
+mqtt_client.connect(MQTT_BROKER, MQTT_PORT)
 
 
 mqtt_client.subscribe("sensors/#")
 
 
-print("Service Aware SDN Routing Started...")
+print("Service Aware IP SDN Routing Started...")
 
 
 mqtt_client.loop_forever()
