@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gps-drift-service
+  labels:
+    app: gps-drift
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gps-drift
+  template:
+    metadata:
+      labels:
+        app: gps-drift
+    spec:
+      containers:
+      - name: gps-drift
+        image: amitshrestha635/phd-lab:gps_drift-v1  # (Or update tag if you built it as gps-drift-v1)
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8000
+        env:
+        - name: REF_LAT
+          value: "27.7172"  # Your fixed reference latitude
+        - name: REF_LON
+          value: "85.3240"  # Your fixed reference longitude
+        resources:
+          limits:
+            cpu: "500m"
+            memory: "512Mi"
+          requests:
+            cpu: "100m"
+            memory: "128Mi"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: gps-drift-service
+spec:
+  selector:
+    app: gps-drift
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8000
+  type: ClusterIP

@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: speed-tracker
+  labels:
+    app: speed-tracker
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: speed-tracker
+  template:
+    metadata:
+      labels:
+        app: speed-tracker
+    spec:
+      containers:
+      - name: speed-tracker
+        image: amitshrestha635/phd-lab:speed_tracker-v1
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8000
+        resources:
+          limits:
+            cpu: "500m"
+            memory: "512Mi"
+          requests:
+            cpu: "100m"
+            memory: "128Mi"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: speed-tracker-service
+spec:
+  selector:
+    app: speed-tracker
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8000
+  type: ClusterIP  # Change to NodePort if you need external hardware scripts to hit it directly

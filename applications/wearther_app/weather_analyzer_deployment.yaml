@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hyper-local-weather
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: weather-analyzer
+  template:
+    metadata:
+      labels:
+        app: weather-analyzer
+    spec:
+      imagePullSecrets:
+        - name: regcred
+      containers:
+        - name: analyzer
+          image: amitshrestha635/phd-lab:weather_analyzer-v1
