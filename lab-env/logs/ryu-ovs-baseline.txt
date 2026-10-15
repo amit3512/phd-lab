@@ -1,0 +1,25 @@
+Mon 12 Oct 15:00:07 BST 2026
+5.15.148-tegra
+Python 3.10.12
+ovs-vswitchd (Open vSwitch) 2.17.12
+566ffbd0-4e79-4b79-b676-a498cd640bd1
+    Bridge br-ryu-test
+        Controller "tcp:127.0.0.1:6653"
+            is_connected: true
+        datapath_type: netdev
+        Port br-ryu-test
+            Interface br-ryu-test
+                type: internal
+    ovs_version: "2.17.12"
+OFPT_FEATURES_REPLY (OF1.3) (xid=0x2): dpid:000012bb705e754d
+n_tables:254, n_buffers:0
+capabilities: FLOW_STATS TABLE_STATS PORT_STATS GROUP_STATS QUEUE_STATS
+OFPST_PORT_DESC reply (OF1.3) (xid=0x3):
+ LOCAL(br-ryu-test): addr:12:bb:70:5e:75:4d
+     config:     PORT_DOWN
+     state:      LINK_DOWN
+     current:    10MB-FD COPPER
+     speed: 10 Mbps now, 0 Mbps max
+OFPT_GET_CONFIG_REPLY (OF1.3) (xid=0x5): frags=normal miss_send_len=0
+OFPST_FLOW reply (OF1.3) (xid=0x2):
+ cookie=0x0, duration=1298.724s, table=0, n_packets=0, n_bytes=0, priority=0 actions=CONTROLLER:65535

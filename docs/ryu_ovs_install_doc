@@ -1,0 +1,410 @@
+Absolutely. Let's turn everything we did into a reusable installation and setup guide for Ryu and Open vSwitch (OVS) on Jetson 6, so you can use it again for your PhD lab or reproduce the setup on another device.
+
+I'll separate the essential commands from the troubleshooting commands, and clearly flag the Python compatibility workaround and the OVS kernel-module limitation we encountered.
+
+# Ryu + OVS setup guide — Jetson 6
+
+## 1. What we installed and configured
+
+| Component                  | Your current setup               |
+| -------------------------- | -------------------------------- |
+| Operating system           | Ubuntu 22.04.5 on Jetson         |
+| Python                     | Python 3.10                      |
+| Ryu                        | 4.34                             |
+| Python virtual environment | `/home/jetson6/phd/lab-env/venv` |
+| Open vSwitch               | 2.17.12                          |
+| OVS datapath               | `netdev` (userspace)             |
+| OpenFlow version           | 1.3                              |
+| Ryu controller port        | TCP `6653`                       |
+| Test bridge                | `br-ryu-test`                    |
+| Controller address         | `127.0.0.1:6653`                 |
+
+Important: Ryu is installed inside the Python virtual environment, but OVS is a system-level service. You do not need to activate the Python environment to run `ovs-vsctl` or `ovs-ofctl`.
+
+## 2. Step A — Install Python and create the Ryu virtual environment
+
+Run these commands on Jetson 6 in a normal terminal.
+
+A1. Install the Python environment tools
+
+Bash
+
+```
+sudo apt update
+sudo apt install -y python3-venv python3-pip
+```
+
+A2. Create the project directory and virtual environment
+
+Bash
+
+```
+mkdir -p ~/phd/lab-env
+python3 -m venv ~/phd/lab-env/venv
+```
+
+A3. Activate the environment
+
+Bash
+
+```
+source ~/phd/lab-env/venv/bin/activate
+```
+
+Your terminal prompt should now show `(venv)`.
+
+A4. Install Ryu and its packaging dependency
+
+Bash
+
+```
+python -m pip install --upgrade pip setuptools wheel
+python -m pip install ryu==4.34 packaging
+```
+
+Verify the installation:
+
+Bash
+
+```
+ryu-manager --version
+```
+
+Expected:
+
+```
+ryu-manager 4.34
+```
+
+If Ryu is already installed, you do not need to reinstall it. You can simply activate the existing environment.
+
+## 3. Step B — Resolve the Ryu/Eventlet compatibility issue
+
+This was one of the main troubleshooting steps in your setup.
+
+Ryu 4.34 attempted to import `ALREADY_HANDLED` from `eventlet.wsgi`, but your installed Eventlet 0.41.2 did not provide that symbol. Downgrading to Eventlet 0.30.2 caused a different error with Python 3.10, so we restored Eventlet 0.41.2 and dnspython 2.8.0.
+
+The versions we restored were:
+
+Bash
+
+```
+source ~/phd/lab-env/venv/bin/activate
+
+python -m pip install eventlet==0.41.2 dnspython==2.8.0
+python -m pip install packaging
+```
+
+Check the installed versions:
+
+Bash
+
+```
+python -c "import sys, eventlet, dns, packaging; print('Python:', sys.version); print('Eventlet:', eventlet.__version__); print('dnspython:', dns.__version__); print('packaging:', packaging.__version__)"
+```
+
+### What about the `wsgi.py` patch?
+
+We also edited this file:
+
+```
+~/phd/lab-env/venv/lib/python3.10/site-packages/ryu/app/wsgi.py
+```
+
+A backup was saved as:
+
+```
+~/phd/lab-env/venv/lib/python3.10/site-packages/ryu/app/wsgi.py.bak
+```
+
+The patch allowed `ryu-manager --version` and the simple-switch application to run, but it assigned `None` when the missing `ALREADY_HANDLED` symbol was unavailable. That is not a complete compatibility fix for Ryu's WSGI functionality. Do not copy this patch blindly when installing Ryu on another device. If you need Ryu's REST API or WebSocket applications, we should address that compatibility issue separately.
+
+## 4. Step C — Start and test the Ryu controller
+
+Open Terminal 1.
+
+Activate the environment:
+
+Bash
+
+```
+source ~/phd/lab-env/venv/bin/activate
+```
+
+Start Ryu with its OpenFlow 1.3 learning-switch application:
+
+Bash
+
+```
+ryu-manager ryu.app.simple_switch_13 --verbose
+```
+
+Keep this terminal open while you use OVS.
+
+You may see an Eventlet deprecation warning. That warning alone does not establish whether the controller works; check the process and its listening ports.
+
+Open Terminal 2 and run:
+
+Bash
+
+```
+sudo ss -lntp | grep -E '6653|6633'
+```
+
+We confirmed Ryu was listening on ports `6653` and `6633`. OVS uses port `6653` for the connection we configured.
+
+## 5. Step D — Install Open vSwitch
+
+Run these commands in Terminal 2, outside the Python virtual environment.
+
+Bash
+
+```
+sudo apt update
+sudo apt install openvswitch-switch
+```
+
+Verify the installed version:
+
+Bash
+
+```
+sudo ovs-vswitchd --version
+```
+
+Our installed version was:
+
+```
+Open vSwitch 2.17.12
+```
+
+Check the database and bridge configuration:
+
+Bash
+
+```
+sudo ovs-vsctl show
+```
+
+### The Jetson-specific problem we encountered
+
+OVS attempted to load its kernel module, but the module was unavailable for your running Jetson kernel:
+
+```
+Module openvswitch not found in directory /lib/modules/5.15.148-tegra
+```
+
+We therefore used the userspace `netdev` datapath for the isolated experiment, rather than rebuilding the Jetson kernel or changing your networking configuration.
+
+Check your kernel version and whether the module is present:
+
+Bash
+
+```
+uname -r
+lsmod | grep openvswitch
+```
+
+No output from the second command means the module is not currently listed as loaded. It does not, by itself, prove why the module is unavailable.
+
+## 6. Step E — Start the OVS userspace daemon
+
+In our setup, the OVS database server was running, but the normal OVS service could not start its kernel datapath.
+
+We started the forwarding daemon manually:
+
+Bash
+
+```
+sudo ovs-vswitchd --pidfile --detach --log-file \
+  unix:/var/run/openvswitch/db.sock
+```
+
+Verify that it is running:
+
+Bash
+
+```
+sudo pgrep -af ovs-vswitchd
+```
+
+Check the OVS database:
+
+Bash
+
+```
+sudo ovs-vsctl show
+```
+
+If the daemon fails, inspect its logs:
+
+Bash
+
+```
+sudo tail -n 60 /var/log/openvswitch/ovs-vswitchd.log
+```
+
+Important: This is the manual startup method we used for your current setup, not a universal replacement for a correctly configured OVS system service. Avoid repeatedly starting the daemon if it is already running.
+
+## 7. Step F — Create the test bridge and connect it to Ryu
+
+These commands created the bridge you have now, `br-ryu-test`.
+
+Bash
+
+```
+sudo ovs-vsctl add-br br-ryu-test \
+  -- set bridge br-ryu-test \
+  datapath_type=netdev protocols=OpenFlow13
+```
+
+Set the Ryu controller address:
+
+Bash
+
+```
+sudo ovs-vsctl set-controller br-ryu-test tcp:127.0.0.1:6653
+```
+
+Verify the bridge:
+
+Bash
+
+```
+sudo ovs-vsctl show
+```
+
+Check its datapath type:
+
+Bash
+
+```
+sudo ovs-vsctl get Bridge br-ryu-test datapath_type
+```
+
+Expected:
+
+```
+netdev
+```
+
+Check the controller address:
+
+Bash
+
+```
+sudo ovs-vsctl get-controller br-ryu-test
+```
+
+Expected:
+
+```
+tcp:127.0.0.1:6653
+```
+
+Check the connection status:
+
+Bash
+
+```
+sudo ovs-vsctl get Controller br-ryu-test is_connected
+```
+
+Expected:
+
+```
+true
+```
+
+That final `true` is the key confirmation that OVS has connected to Ryu.
+
+## 8. Step G — Verify OpenFlow communication
+
+Check the switch details:
+
+Bash
+
+```
+sudo ovs-ofctl -O OpenFlow13 show br-ryu-test
+```
+
+Check the flow table:
+
+Bash
+
+```
+sudo ovs-ofctl -O OpenFlow13 dump-flows br-ryu-test
+```
+
+We observed a table-miss flow similar to:
+
+```
+priority=0 actions=CONTROLLER:65535
+```
+
+This sends unmatched packets to the controller. Because the bridge currently has no traffic-generating ports, zero packet counts are expected.
+
+## 9. Quick verification checklist for future use
+
+When you return to the lab, you generally do not need to repeat the entire installation. Run these checks first.
+
+### Lab checklist
+
+7 of 7 checked
+
+Ryu environment exists
+
+ls -d ~/phd/lab-env/venv
+
+Copy command
+
+Ryu version
+
+source ~/phd/lab-env/venv/bin/activate && ryu-manager --version
+
+Copy command
+
+Ryu listening on OpenFlow port
+
+sudo ss -lntp | grep 6653
+
+Copy command
+
+OVS daemon running
+
+sudo pgrep -af ovs-vswitchd
+
+Copy command
+
+OVS bridge exists
+
+sudo ovs-vsctl list-br
+
+Copy command
+
+OVS connected to Ryu
+
+sudo ovs-vsctl get Controller br-ryu-test is_connected
+
+Copy command
+
+OpenFlow switch responds
+
+sudo ovs-ofctl -O OpenFlow13 show br-ryu-test
+
+Copy command
+
+## 10. What not to repeat unnecessarily
+
+* Do not reinstall Ryu or OVS every time you start a lab session.
+
+* Do not downgrade Eventlet to `0.30.2` on this Python 3.10 environment.
+
+* Do not restart OVS or change system networking while the cluster is running unless we have diagnosed a specific problem.
+
+* Do not attach Kubernetes/Calico interfaces to `br-ryu-test`.
+
+* Do not treat userspace `netdev` benchmark results as equivalent to kernel-datapath OVS performance.
+
+Your current verified milestone is: Ryu 4.34 running in the virtual environment, OVS 2.17.12 using `netdev`, and `br-ryu-test` connected to Ryu over OpenFlow 1.3. That establishes the control connection; full multi-switch packet forwarding and predictive rerouting are still future steps.
+

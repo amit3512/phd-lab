@@ -1,0 +1,269 @@
+Below is the complete command sequence for Jetson 6, from starting OVS and Ryu through creating seven virtual switches and connecting them with virtual Ethernet links. It reflects the setup we've already established.
+
+Important: Your OVS daemon and Ryu controller are already running, and the seven switches and seven links have been created. The commands below are a reusable record of the process. Don't rerun the startup commands blindly on the current system; I've marked which steps are already complete.
+
+# 1. Activate the Ryu virtual environment
+
+Run this in Terminal 1:
+
+Bash
+
+```
+source ~/phd/lab-env/venv/bin/activate
+
+ryu-manager --version
+```
+
+Expected: Ryu 4.34.
+
+# 2. Start Ryu
+
+If Ryu is already running in Terminal 1, leave it running. Otherwise, start it with:
+
+Bash
+
+```
+source ~/phd/lab-env/venv/bin/activate
+
+ryu-manager ryu.app.simple_switch_13 --verbose
+```
+
+Keep this terminal open. Ryu listens on OpenFlow port `6653`.
+
+# 3. Start or verify Open vSwitch
+
+Open Terminal 2.
+
+Check whether the OVS daemon is already running:
+
+Bash
+
+```
+sudo pgrep -af ovs-vswitchd
+```
+
+If it is running, do not start another instance. In your current setup, the daemon is already running.
+
+If it is not running, and the OVS database server is running, the previously used startup command is:
+
+Bash
+
+```
+sudo ovs-vswitchd --pidfile --detach \
+  --log-file unix:/var/run/openvswitch/db.sock
+```
+
+Check the OVS version:
+
+Bash
+
+```
+sudo ovs-vsctl --version
+```
+
+Your installed version is OVS 2.17.12.
+
+# 4. Create the first virtual switch
+
+The first switch is named `br-ryu-test`, and it serves as S1.
+
+This switch already exists in your current environment.
+
+Bash
+
+```
+sudo ovs-vsctl --may-exist add-br br-ryu-test
+
+sudo ovs-vsctl set bridge br-ryu-test \
+  datapath_type=netdev protocols=OpenFlow13
+
+sudo ovs-vsctl set-controller br-ryu-test \
+  tcp:127.0.0.1:6653
+```
+
+# 5. Create the remaining six switches
+
+The following commands create S2–S7 and configure each to use the userspace `netdev` datapath and OpenFlow 1.3.
+
+These switches already exist in your current environment.
+
+Bash
+
+```
+for br in s2 s3 s4 s5 s6 s7; do
+  sudo ovs-vsctl --may-exist add-br "$br"
+
+  sudo ovs-vsctl set bridge "$br" \
+    datapath_type=netdev protocols=OpenFlow13
+
+  sudo ovs-vsctl set-controller "$br" \
+    tcp:127.0.0.1:6653
+done
+```
+
+The `netdev` setting is important because your Jetson 6 kernel does not currently have the OVS kernel module available.
+
+# 6. Verify all seven switches
+
+Bash
+
+```
+sudo ovs-vsctl list-br
+```
+
+Expected switch names:
+
+```
+br-ryu-test
+s2
+s3
+s4
+s5
+s6
+s7
+```
+
+Check their datapath type, controller status and datapath IDs:
+
+Bash
+
+```
+for br in br-ryu-test s2 s3 s4 s5 s6 s7; do
+  echo "===== $br ====="
+
+  sudo ovs-vsctl get Bridge "$br" datapath_type
+  sudo ovs-vsctl get Controller "$br" is_connected
+  sudo ovs-ofctl -O OpenFlow13 show "$br" | head -n 2
+done
+```
+
+Expected results:
+
+* Datapath type: `netdev`
+
+* Controller status: `true`
+
+* A unique DPID for every switch
+
+We have already confirmed all three for your seven switches.
+
+# 7. Connect the seven switches
+
+The topology contains a main path and an alternate path.
+
+### Main path
+
+#### S1
+
+#### S2
+
+#### S3
+
+#### S4
+
+#### S7
+
+### Alternate path
+
+#### S2
+
+#### S5
+
+#### S6
+
+#### S4
+
+The alternate route bypasses S3 and rejoins the main path at S4.
+
+The following script creates seven virtual Ethernet pairs and attaches each end to the appropriate switch. You have already run this successfully, so don't rerun it unless you are rebuilding or repairing the topology.
+
+Bash
+
+```
+sudo bash <<'EOF'
+set -e
+
+while read -r a br_a b br_b; do
+    echo "Configuring $br_a <--> $br_b ($a <--> $b)"
+
+    if ip link show "$a" >/dev/null 2>&1 &&
+       ip link show "$b" >/dev/null 2>&1; then
+        echo "  veth pair already exists"
+    elif ! ip link show "$a" >/dev/null 2>&1 &&
+         ! ip link show "$b" >/dev/null 2>&1; then
+        ip link add "$a" type veth peer name "$b"
+    else
+        echo "ERROR: only one end of the veth pair exists."
+        exit 1
+    fi
+
+    ip link set "$a" up
+    ip link set "$b" up
+
+    ovs-vsctl --may-exist add-port "$br_a" "$a"
+    ovs-vsctl --may-exist add-port "$br_b" "$b"
+done <<'LINKS'
+v12a br-ryu-test v12b s2
+v23a s2 v23b s3
+v34a s3 v34b s4
+v47a s4 v47b s7
+v25a s2 v25b s5
+v56a s5 v56b s6
+v64a s6 v64b s4
+LINKS
+
+echo "Virtual links configured."
+EOF
+```
+
+## 8. Verify all inter-switch connections
+
+Bash
+
+```
+for br in br-ryu-test s2 s3 s4 s5 s6 s7; do
+    echo "===== $br ====="
+    sudo ovs-vsctl list-ports "$br"
+done
+```
+
+Your current output already confirms these ports:
+
+| Switch             | Virtual Ethernet ports |
+| ------------------ | ---------------------- |
+| S1 (`br-ryu-test`) | `v12a`                 |
+| S2 (`s2`)          | `v12b`, `v23a`, `v25a` |
+| S3 (`s3`)          | `v23b`, `v34a`         |
+| S4 (`s4`)          | `v34b`, `v47a`, `v64b` |
+| S5 (`s5`)          | `v25b`, `v56a`         |
+| S6 (`s6`)          | `v56b`, `v64a`         |
+| S7 (`s7`)          | `v47b`                 |
+
+Each link connects a pair of interfaces:
+
+| Link            | Connection |
+| --------------- | ---------- |
+| `v12a` ↔ `v12b` | S1–S2      |
+| `v23a` ↔ `v23b` | S2–S3      |
+| `v34a` ↔ `v34b` | S3–S4      |
+| `v47a` ↔ `v47b` | S4–S7      |
+| `v25a` ↔ `v25b` | S2–S5      |
+| `v56a` ↔ `v56b` | S5–S6      |
+| `v64a` ↔ `v64b` | S6–S4      |
+
+# 9. What is complete, and what remains?
+
+Completed
+
+Ryu is running; seven OVS switches exist; each switch has a unique DPID; all seven switches connect to Ryu; and seven virtual Ethernet links connect the switches.
+
+Next: Ryu topology discovery
+
+Enable the appropriate Ryu topology application and LLDP link discovery. Then verify that Ryu recognizes all seven switches and seven links.
+
+Later: predictive routing
+
+Generate test traffic, measure congestion, and implement controller logic to select the alternate path. The topology alone does not yet implement predictive rerouting.
+
+Important limitation: `simple_switch_13` alone does not provide full LLDP-based topology discovery or your intended AI/ML routing. We should configure that next, while keeping this isolated experimental network separate from Kubernetes and Calico.
+

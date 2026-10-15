@@ -1,0 +1,314 @@
+Here is a step-by-step record of what we did after creating the seven OVS virtual switches on Jetson 6, with the commands you can reuse in the future.
+
+# SDN virtual topology setup and verification — Jetson 6
+
+## 1. Activate the Ryu Python environment
+
+Bash
+
+```
+cd ~/phd/lab-env
+source ~/phd/lab-env/venv/bin/activate
+```
+
+This activates the virtual environment where Ryu 4.34 is installed.
+
+## 2. Verify the Ryu topology-discovery module
+
+Bash
+
+```
+python -c "from ryu.topology import switches; print('Ryu topology discovery module: OK')"
+```
+
+Expected output:
+
+```
+Ryu topology discovery module: OK
+```
+
+Note: We also tried importing `ryu.topology.api` directly. It failed with `IndexError` because that API expects to be loaded inside a Ryu application context. That was not evidence of a problem with OVS.
+
+## 3. Check the topology-monitor application
+
+We created `~/phd/lab-env/topology_monitor.py` to record switch and link events.
+
+Display its contents:
+
+Bash
+
+```
+cat ~/phd/lab-env/topology_monitor.py
+```
+
+Check its Python syntax:
+
+Bash
+
+```
+python -m py_compile ~/phd/lab-env/topology_monitor.py
+echo "Exit code: $?"
+```
+
+Expected:
+
+```
+Exit code: 0
+```
+
+The monitor records four event types:
+
+* `TOPOLOGY_SWITCH_ENTER`
+
+* `TOPOLOGY_SWITCH_LEAVE`
+
+* `TOPOLOGY_LINK_ADD`
+
+* `TOPOLOGY_LINK_DELETE`
+
+## 4. Check whether Ryu is running
+
+Bash
+
+```
+pgrep -af ryu-manager
+```
+
+If running, this displays the Ryu process and its command line. If nothing is returned, Ryu is not running.
+
+## 5. Start Ryu with topology discovery enabled
+
+We ran Ryu with the OpenFlow 1.3 learning switch, topology-discovery application, and our custom monitor:
+
+Bash
+
+```
+cd ~/phd/lab-env
+source ~/phd/lab-env/venv/bin/activate
+
+ryu-manager --observe-links \
+  ryu.app.simple_switch_13 \
+  ryu.topology.switches \
+  ~/phd/lab-env/topology_monitor.py \
+  2>&1 | tee ~/phd/lab-env/ryu-topology.log
+```
+
+What the options mean:
+
+| Option/application             | Purpose                                          |
+| ------------------------------ | ------------------------------------------------ |
+| `--observe-links`              | Enables Ryu's link-discovery support             |
+| `ryu.app.simple_switch_13`     | Loads a basic learning switch using OpenFlow 1.3 |
+| `ryu.topology.switches`        | Discovers connected switches and links           |
+| `topology_monitor.py`          | Logs switch and link events                      |
+| <code>2>&1 \\\| tee ...</code> | Displays output and saves it to a log file       |
+
+Important: Keep this terminal open while Ryu runs. If you need to stop it, press `Ctrl+C` once.
+
+## 6. Verify the seven OVS bridges and controller connections
+
+Display the OVS configuration:
+
+Bash
+
+```
+sudo ovs-vsctl show
+```
+
+Check whether each bridge is connected to the controller:
+
+Bash
+
+```
+for b in br-ryu-test s2 s3 s4 s5 s6 s7; do
+    printf "%-12s " "$b"
+    sudo ovs-vsctl get Controller "$b" is_connected
+done
+```
+
+Expected result:
+
+```
+br-ryu-test  true
+s2           true
+s3           true
+s4           true
+s5           true
+s6           true
+s7           true
+```
+
+This confirms OpenFlow connectivity to Ryu. It does not, by itself, confirm that all links are discovered.
+
+## 7. Verify switch and link discovery
+
+Read the discovery events from the saved log:
+
+Bash
+
+```
+grep -E 'TOPOLOGY_SWITCH_ENTER|TOPOLOGY_LINK_ADD|TOPOLOGY_SWITCH_LEAVE|TOPOLOGY_LINK_DELETE' \
+  ~/phd/lab-env/ryu-topology.log
+```
+
+Count the distinct switch DPIDs:
+
+Bash
+
+```
+grep 'TOPOLOGY_SWITCH_ENTER' ~/phd/lab-env/ryu-topology.log \
+  | sed 's/.*dpid=//' | sort -u | wc -l
+```
+
+Expected: `7`
+
+Count the unique directed link events:
+
+Bash
+
+```
+grep 'TOPOLOGY_LINK_ADD' ~/phd/lab-env/ryu-topology.log \
+  | sed 's/TOPOLOGY_LINK_ADD //' | sort -u | wc -l
+```
+
+Expected: `14` — seven bidirectional links represented as fourteen directed events.
+
+These counts are based on the current log. If you restart Ryu and append to an old log, events may be duplicated; the `sort -u` avoids counting identical lines more than once.
+
+## 8. Confirm the intended topology
+
+The DPIDs below were observed in your environment.
+
+| Switch | OVS bridge    | Datapath ID        |
+| ------ | ------------- | ------------------ |
+| S1     | `br-ryu-test` | `000012bb705e754d` |
+| S2     | `s2`          | `000002f9b0b2454f` |
+| S3     | `s3`          | `0000fa80ebe1194c` |
+| S4     | `s4`          | `0000c2b726c53740` |
+| S5     | `s5`          | `0000868028d9e64b` |
+| S6     | `s6`          | `00002a97c6f41c48` |
+| S7     | `s7`          | `000026c5b0a4f34c` |
+
+Your seven inter-switch connections are:
+
+| Connection | Port on first switch | Port on second switch |
+| ---------- | -------------------- | --------------------- |
+| S1–S2      | S1:1                 | S2:1                  |
+| S2–S3      | S2:2                 | S3:1                  |
+| S3–S4      | S3:2                 | S4:1                  |
+| S4–S7      | S4:2                 | S7:1                  |
+| S2–S5      | S2:3                 | S5:1                  |
+| S5–S6      | S5:2                 | S6:1                  |
+| S6–S4      | S6:2                 | S4:3                  |
+
+The primary and alternate paths are therefore:
+
+Primary path
+
+S1
+
+S2
+
+S3
+
+S4
+
+S7
+
+Alternate path
+
+S1
+
+S2
+
+S5
+
+S6
+
+S4
+
+S7
+
+## 9. Inspect the OpenFlow flow tables
+
+We ran:
+
+Bash
+
+```
+for b in br-ryu-test s2 s3 s4 s5 s6 s7; do
+    echo "========== $b =========="
+    sudo ovs-ofctl -O OpenFlow13 dump-flows "$b"
+done
+```
+
+This displayed two baseline rules per switch:
+
+* A high-priority LLDP rule sending discovery packets to the controller.
+
+* A priority-zero table-miss rule sending unmatched packets to the controller.
+
+No explicit route-specific forwarding rules had been installed yet. The next stage is to create test endpoints, install rules for the primary path, verify traffic, and then test switching to the alternate path.
+
+## 10. Quick diagnostic commands for future use
+
+Keep these commands together for routine checks.
+
+Is Ryu running?
+
+Bash
+
+```
+pgrep -af ryu-manager
+```
+
+Copy command
+
+Are all bridges connected?
+
+Bash
+
+```
+for b in br-ryu-test s2 s3 s4 s5 s6 s7; do
+    printf "%-12s " "$b"
+    sudo ovs-vsctl get Controller "$b" is_connected
+done
+```
+
+Copy command
+
+What topology events were recorded?
+
+Bash
+
+```
+grep -E 'TOPOLOGY_SWITCH_ENTER|TOPOLOGY_LINK_ADD|TOPOLOGY_SWITCH_LEAVE|TOPOLOGY_LINK_DELETE' \
+  ~/phd/lab-env/ryu-topology.log
+```
+
+Copy command
+
+Inspect one switch's flows
+
+Bash
+
+```
+sudo ovs-ofctl -O OpenFlow13 dump-flows s2
+```
+
+Copy command
+
+### Current milestone
+
+* Seven OVS bridges created and connected to Ryu.
+
+* All seven switches discovered.
+
+* All seven bidirectional links discovered.
+
+* Controller and discovery logs working.
+
+* Explicit primary/alternate forwarding rules and test endpoints not yet configured.
+
+Research caveat: Your OVS bridges use `datapath_type=netdev` because the Jetson kernel Open vSwitch module was unavailable. This setup is suitable for a functional prototype, but you should document the userspace datapath when reporting performance results; its latency and throughput may differ substantially from a kernel datapath.
+

@@ -1,0 +1,35 @@
+sudo kubeadm reset -f \
+  --cri-socket=unix:///run/containerd/containerd.sock
+  
+Then remove the old Kubernetes and CNI configuration:
+
+sudo rm -rf /etc/cni/net.d
+sudo rm -rf /var/lib/cni
+sudo rm -rf /var/lib/kubelet/*
+sudo rm -rf /etc/kubernetes
+
+Remove the old kubeconfig for your current user:
+
+rm -rf ~/.kube
+
+If you previously used sudo kubectl, also remove the root user's kubeconfig:
+
+sudo rm -rf /root/.kube
+
+The official kubeadm reset command does not remove CNI configuration, kubeconfig files, or all networking rules, so these are separate cleanup steps. 
+Kubernetes
++1
+
+Step 3 — Clean up Calico and virtual networking
+
+Perform this on both machines after resetting Kubernetes:
+
+sudo systemctl stop kubelet
+
+sudo ip link delete cni0 2>/dev/null || true
+sudo ip link delete flannel.1 2>/dev/null || true
+sudo ip link delete tunl0 2>/dev/null || true
+sudo ip link delete vxlan.calico 2>/dev/null || true
+sudo ip link delete vxlan-v6.calico 2>/dev/null || true
+
+These commands remove common Kubernetes networking interfaces if present. They do not remove every possible Calico interface or every networking rule.

@@ -1,0 +1,287 @@
+No need to apologise — you've done a lot today. You've been setting up a seven-switch SDN test network and troubleshooting its packet forwarding, so it's completely reasonable to stop here. Let's leave you a clear record so you can continue tomorrow without repeating work.
+
+# Today's research lab summary
+
+## 1. What we are building
+
+Your PhD prototype is intended to use SDN + edge intelligence for predictive routing:
+
+1. Collect network and edge-node metrics.
+
+2. Use those metrics to detect congestion or predict a potential bottleneck.
+
+3. Have the SDN controller select a suitable route.
+
+4. Forward sensor traffic through the selected switches.
+
+5. Later, evaluate latency, packet loss, throughput and routing behaviour.
+
+Today, we concentrated on getting the virtual SDN topology and endpoints ready for a basic connectivity test. Predictive AI/ML routing and systematic metric collection are not yet complete.
+
+## 2. Environment and components configured
+
+| Component      | Current setup                                                                      |
+| -------------- | ---------------------------------------------------------------------------------- |
+| Host           | Jetson 6, Ubuntu 22.04.5                                                           |
+| Open vSwitch   | Version 2.17.12                                                                    |
+| Ryu            | Version 4.34 in a Python virtual environment                                       |
+| OpenFlow       | Version 1.3                                                                        |
+| Switches       | Seven virtual OVS bridges, S1–S7                                                   |
+| Test endpoints | Host A: `10.200.0.1`; Host B: `10.200.0.2`                                         |
+| Datapath       | OVS userspace `netdev`                                                             |
+| Controller     | Ryu with `simple_switch_13`, topology discovery and a topology-monitor application |
+
+The kernel Open vSwitch module is unavailable for the current Jetson kernel, so this prototype uses the userspace datapath. Keep that limitation in mind when interpreting performance measurements.
+
+## 3. Seven-switch topology
+
+The current topology has two possible routes from S1 to S7:
+
+Primary route
+
+S1
+
+S2
+
+S3
+
+S4
+
+S7
+
+Alternate route
+
+S1
+
+S2
+
+S5
+
+S6
+
+S4
+
+S7
+
+S2–S3–S4–S6–S5–S2 forms a loop. We need loop-safe forwarding before testing automatic path changes.
+
+The inter-switch links are:
+
+* S1–S2
+
+* S2–S3
+
+* S3–S4
+
+* S4–S7
+
+* S2–S5
+
+* S5–S6
+
+* S6–S4
+
+## 4. Commands we used
+
+### A. Activate the Python environment and run Ryu
+
+The Ryu controller is currently running in its own terminal. If it is still running tomorrow, leave it running.
+
+Bash
+
+```
+cd ~/phd/lab-env
+source ~/phd/lab-env/venv/bin/activate
+```
+
+The controller was started using:
+
+Bash
+
+```
+ryu-manager --observe-links \
+  ryu.app.simple_switch_13 \
+  ryu.topology.switches \
+  ~/phd/lab-env/topology_monitor.py \
+  2>&1 | tee ~/phd/lab-env/ryu-topology.log
+```
+
+Log file:
+
+Bash
+
+```
+~/phd/lab-env/ryu-topology.log
+```
+
+We also inspected the standard learning-switch implementation:
+
+Bash
+
+```
+sed -n '1,240p' \
+  ~/phd/lab-env/venv/lib/python3.10/site-packages/ryu/app/simple_switch_13.py
+```
+
+And checked the log for errors:
+
+Bash
+
+```
+grep -n -Ei 'Traceback|Exception|ERROR|failed' \
+  ~/phd/lab-env/ryu-topology.log | tail -n 30
+```
+
+Only the Eventlet `RLock(s) were not greened` warning appeared in that search. No traceback was found.
+
+### B. Inspect OVS switches and ports
+
+Use these commands tomorrow to verify the switches and controller connections:
+
+Bash
+
+```
+sudo ovs-vsctl show
+```
+
+Bash
+
+```
+sudo ovs-vsctl list Controller
+```
+
+Inspect individual switches:
+
+Bash
+
+```
+sudo ovs-ofctl -O OpenFlow13 show br-ryu-test
+sudo ovs-ofctl -O OpenFlow13 show s2
+sudo ovs-ofctl -O OpenFlow13 show s3
+sudo ovs-ofctl -O OpenFlow13 show s4
+sudo ovs-ofctl -O OpenFlow13 show s5
+sudo ovs-ofctl -O OpenFlow13 show s6
+sudo ovs-ofctl -O OpenFlow13 show s7
+```
+
+### C. Check the test endpoints
+
+Bash
+
+```
+sudo ip netns list
+```
+
+Bash
+
+```
+sudo ip netns exec hostA ip addr show
+sudo ip netns exec hostB ip addr show
+```
+
+Host A should have `10.200.0.1/24`, and Host B should have `10.200.0.2/24`.
+
+The namespaces `hostA` and `hostB` are separate test endpoints. Other listed namespaces belong to the existing system/container networking; do not modify them.
+
+### D. Connectivity test
+
+We ran:
+
+Bash
+
+```
+sudo ip netns exec hostA ping -c 4 -W 2 10.200.0.2
+```
+
+Result: 100% packet loss, with `Destination Host Unreachable`.
+
+That is why we investigated the learning-switch code and identified the cyclic topology as a likely cause.
+
+### E. Inspect flow tables
+
+These commands let you examine forwarding rules and packet counters:
+
+Bash
+
+```
+sudo ovs-ofctl -O OpenFlow13 dump-flows br-ryu-test
+sudo ovs-ofctl -O OpenFlow13 dump-flows s2
+sudo ovs-ofctl -O OpenFlow13 dump-flows s3
+sudo ovs-ofctl -O OpenFlow13 dump-flows s4
+sudo ovs-ofctl -O OpenFlow13 dump-flows s5
+sudo ovs-ofctl -O OpenFlow13 dump-flows s6
+sudo ovs-ofctl -O OpenFlow13 dump-flows s7
+```
+
+For port-level traffic counters:
+
+Bash
+
+```
+sudo ovs-ofctl -O OpenFlow13 dump-ports s2
+sudo ovs-ofctl -O OpenFlow13 dump-ports s3
+sudo ovs-ofctl -O OpenFlow13 dump-ports s4
+sudo ovs-ofctl -O OpenFlow13 dump-ports s5
+sudo ovs-ofctl -O OpenFlow13 dump-ports s6
+```
+
+These expose packet and byte counts, which can help us calculate traffic rates by taking counter snapshots at known time intervals. They are not yet a complete metrics-collection pipeline.
+
+## 5. Where we stopped — important for tomorrow
+
+We have not yet run the following command. It was the proposed next step:
+
+Bash
+
+```
+sudo ovs-ofctl -O OpenFlow13 mod-port s4 v64b down
+```
+
+It temporarily disables the S4–S6 link to break the loop for the first connectivity test.
+
+After running it, verify:
+
+Bash
+
+```
+sudo ovs-ofctl -O OpenFlow13 show s4 | grep -E 'v64b|v47a|v34b'
+sudo ovs-ofctl -O OpenFlow13 show s6 | grep v64a
+```
+
+Then retry:
+
+Bash
+
+```
+sudo ip netns exec hostA ping -c 4 -W 2 10.200.0.2
+```
+
+If the ping still fails, stop and share the outputs. Don't add manual flows or change the controller yet. To restore the link if needed:
+
+Bash
+
+```
+sudo ovs-ofctl -O OpenFlow13 mod-port s4 v64b up
+```
+
+Only do that if you need to restore the original topology; we can decide based on the test result.
+
+## 6. What we will collect next
+
+Once basic connectivity works, we can build a repeatable metrics-collection process.
+
+| Metric                    | Initial collection method                                       |
+| ------------------------- | --------------------------------------------------------------- |
+| Switch port traffic       | `ovs-ofctl dump-ports`                                          |
+| Flow packet/byte counts   | `ovs-ofctl dump-flows`                                          |
+| Link utilisation          | Port counter differences over time, combined with link capacity |
+| End-to-end reachability   | `ping`                                                          |
+| Latency and packet loss   | Repeated ping measurements; later a controlled traffic test     |
+| Edge CPU and memory       | `top`, `free`, and node-level monitoring                        |
+| Kubernetes pod/node state | `kubectl get pods -o wide`, `kubectl get nodes`                 |
+| Predictive routing        | Not implemented yet; will consume collected metrics later       |
+
+We should collect a baseline first, then introduce controlled congestion and compare the normal route with the alternate route. Because this is a userspace OVS prototype, results should be reported with that limitation.
+
+That's a good stopping point for today. Tomorrow, start with the loop-breaking test above, share the output, and we'll proceed one step at a time.
+
