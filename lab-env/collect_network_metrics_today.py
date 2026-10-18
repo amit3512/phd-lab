@@ -8,7 +8,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 INTERVAL = 5
-OUTPUT = Path("network_metrics_20261015.csv")
+OUTPUT = Path("network_metrics_20261016.csv")
 
 # Six-switch topology only; exclude br-ryu-test and LOCAL ports.
 PORTS = {
