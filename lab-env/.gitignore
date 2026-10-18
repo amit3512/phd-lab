@@ -1,0 +1,9 @@
+# Python Virtual Environment
+venv/
+
+# Python cache
+__pycache__/
+*.py[cod]
+
+# Optional: If you want to keep model weights out of git (though some repos track them)
+# model_built.joblib

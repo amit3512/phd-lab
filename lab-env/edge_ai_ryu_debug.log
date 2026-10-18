@@ -1,0 +1,203 @@
+/home/jetson6/phd/lab-env/venv/lib/python3.10/site-packages/ryu/lib/hub.py:30: EventletDeprecationWarning: 
+Eventlet is deprecated. It is currently being maintained in bugfix mode, and
+we strongly recommend against using it for new projects.
+
+If you are already using Eventlet, we recommend migrating to a different
+framework.  For more detail see
+https://eventlet.readthedocs.io/en/latest/asyncio/migration.html
+
+  import eventlet
+1 RLock(s) were not greened, to fix this error make sure you run eventlet.monkey_patch() before importing any other modules.
+loading app edge_ai_ryu.py
+loading app ryu.app.rest_topology
+require_app: ryu.topology.switches is required by ryu.app.rest_topology
+loading app ryu.controller.ofp_handler
+loading app ryu.topology.switches
+loading app ryu.controller.ofp_handler
+creating context wsgi
+instantiating app edge_ai_ryu.py of EdgeAIRyu
+MODEL_LOADED path=/home/jetson6/phd/lab-env/congestion_rf.joblib features=['switch', 'port', 'rx_mbps', 'tx_mbps', 'rx_pps', 'tx_pps', 'rx_drops', 'tx_drops', 'rx_errors', 'tx_errors'] classes=[0]
+MODEL_HAS_ONLY_ONE_CLASS classes=[0]; model predictions alone cannot distinguish congestion
+EDGE_AI_START threshold=0.000100 Mbps simulation=True
+instantiating app ryu.app.rest_topology of TopologyAPI
+instantiating app ryu.controller.ofp_handler of OFPHandler
+instantiating app ryu.topology.switches of Switches
+BRICK EdgeAIRyu
+  CONSUMES EventOFPBarrierReply
+  CONSUMES EventOFPFlowStatsReply
+  CONSUMES EventOFPErrorMsg
+  CONSUMES EventOFPPortDescStatsReply
+  CONSUMES EventOFPPortStatsReply
+  CONSUMES EventOFPStateChange
+  CONSUMES EventOFPSwitchFeatures
+BRICK TopologyAPI
+BRICK ofp_event
+  PROVIDES EventOFPBarrierReply TO {'EdgeAIRyu': {'main'}}
+  PROVIDES EventOFPFlowStatsReply TO {'EdgeAIRyu': {'main'}}
+  PROVIDES EventOFPErrorMsg TO {'EdgeAIRyu': {'main', 'config'}}
+  PROVIDES EventOFPPortDescStatsReply TO {'EdgeAIRyu': {'main'}}
+  PROVIDES EventOFPPortStatsReply TO {'EdgeAIRyu': {'main'}}
+  PROVIDES EventOFPStateChange TO {'EdgeAIRyu': {'main', 'dead'}, 'switches': {'main', 'dead'}}
+  PROVIDES EventOFPSwitchFeatures TO {'EdgeAIRyu': {'config'}}
+  PROVIDES EventOFPPacketIn TO {'switches': {'main'}}
+  PROVIDES EventOFPPortStatus TO {'switches': {'main'}}
+  CONSUMES EventOFPEchoReply
+  CONSUMES EventOFPEchoRequest
+  CONSUMES EventOFPErrorMsg
+  CONSUMES EventOFPHello
+  CONSUMES EventOFPPortDescStatsReply
+  CONSUMES EventOFPPortStatus
+  CONSUMES EventOFPSwitchFeatures
+BRICK switches
+  CONSUMES EventOFPPacketIn
+  CONSUMES EventHostRequest
+  CONSUMES EventLinkRequest
+  CONSUMES EventOFPPortStatus
+  CONSUMES EventOFPStateChange
+  CONSUMES EventSwitchRequest
+MONITOR_WAITING_FOR_ROLES identified=[]
+(13609) wsgi starting up on http://0.0.0.0:8080
+connected socket:<eventlet.greenio.base.GreenSocket object at 0xffff76e8efe0> address:('127.0.0.1', 56986)
+hello ev <ryu.controller.ofp_event.EventOFPHello object at 0xffff76e8cac0>
+move onto config mode
+connected socket:<eventlet.greenio.base.GreenSocket object at 0xffff76e8df90> address:('127.0.0.1', 57002)
+hello ev <ryu.controller.ofp_event.EventOFPHello object at 0xffff7734bf40>
+move onto config mode
+connected socket:<eventlet.greenio.base.GreenSocket object at 0xffff76e8dd80> address:('127.0.0.1', 57018)
+hello ev <ryu.controller.ofp_event.EventOFPHello object at 0xffff7734b250>
+move onto config mode
+connected socket:<eventlet.greenio.base.GreenSocket object at 0xffff76e8dba0> address:('127.0.0.1', 57032)
+hello ev <ryu.controller.ofp_event.EventOFPHello object at 0xffff7734a8f0>
+move onto config mode
+connected socket:<eventlet.greenio.base.GreenSocket object at 0xffff76e8d7b0> address:('127.0.0.1', 57046)
+hello ev <ryu.controller.ofp_event.EventOFPHello object at 0xffff77349db0>
+move onto config mode
+connected socket:<eventlet.greenio.base.GreenSocket object at 0xffff76e8d750> address:('127.0.0.1', 57056)
+hello ev <ryu.controller.ofp_event.EventOFPHello object at 0xffff773492d0>
+move onto config mode
+connected socket:<eventlet.greenio.base.GreenSocket object at 0xffff76e8d570> address:('127.0.0.1', 57068)
+hello ev <ryu.controller.ofp_event.EventOFPHello object at 0xffff77348790>
+move onto config mode
+MONITOR_WAITING_FOR_ROLES identified=[]
+EVENT ofp_event->EdgeAIRyu EventOFPSwitchFeatures
+switch features ev version=0x4,msg_type=0x6,msg_len=0x20,xid=0x8726f354,OFPSwitchFeatures(auxiliary_id=0,capabilities=79,datapath_id=275431620155724,n_buffers=0,n_tables=254)
+EVENT ofp_event->EdgeAIRyu EventOFPSwitchFeatures
+switch features ev version=0x4,msg_type=0x6,msg_len=0x20,xid=0xb4cc9109,OFPSwitchFeatures(auxiliary_id=0,capabilities=79,datapath_id=46831366315080,n_buffers=0,n_tables=254)
+SWITCH_FEATURES_RECEIVED dpid=0000fa80ebe1194c
+SWITCH_FEATURES_RECEIVED dpid=00002a97c6f41c48
+EVENT ofp_event->EdgeAIRyu EventOFPSwitchFeatures
+switch features ev version=0x4,msg_type=0x6,msg_len=0x20,xid=0x3304a1d9,OFPSwitchFeatures(auxiliary_id=0,capabilities=79,datapath_id=3271434585423,n_buffers=0,n_tables=254)
+EVENT ofp_event->EdgeAIRyu EventOFPSwitchFeatures
+switch features ev version=0x4,msg_type=0x6,msg_len=0x20,xid=0xf8defbb8,OFPSwitchFeatures(auxiliary_id=0,capabilities=79,datapath_id=214091885262656,n_buffers=0,n_tables=254)
+EVENT ofp_event->EdgeAIRyu EventOFPSwitchFeatures
+switch features ev version=0x4,msg_type=0x6,msg_len=0x20,xid=0x59c531fc,OFPSwitchFeatures(auxiliary_id=0,capabilities=79,datapath_id=20596253422925,n_buffers=0,n_tables=254)
+EVENT ofp_event->EdgeAIRyu EventOFPSwitchFeatures
+switch features ev version=0x4,msg_type=0x6,msg_len=0x20,xid=0xcb8662d8,OFPSwitchFeatures(auxiliary_id=0,capabilities=79,datapath_id=147884999304779,n_buffers=0,n_tables=254)
+EVENT ofp_event->EdgeAIRyu EventOFPSwitchFeatures
+switch features ev version=0x4,msg_type=0x6,msg_len=0x20,xid=0x2d310c9d,OFPSwitchFeatures(auxiliary_id=0,capabilities=79,datapath_id=42630514013004,n_buffers=0,n_tables=254)
+SWITCH_FEATURES_RECEIVED dpid=000002f9b0b2454f
+SWITCH_FEATURES_RECEIVED dpid=0000c2b726c53740
+SWITCH_FEATURES_RECEIVED dpid=000012bb705e754d
+SWITCH_FEATURES_RECEIVED dpid=0000868028d9e64b
+SWITCH_FEATURES_RECEIVED dpid=000026c5b0a4f34c
+move onto main mode
+EVENT ofp_event->EdgeAIRyu EventOFPStateChange
+EVENT ofp_event->switches EventOFPStateChange
+EVENT ofp_event->EdgeAIRyu EventOFPPortDescStatsReply
+move onto main mode
+EVENT ofp_event->EdgeAIRyu EventOFPStateChange
+EVENT ofp_event->switches EventOFPStateChange
+EVENT ofp_event->EdgeAIRyu EventOFPPortDescStatsReply
+move onto main mode
+EVENT ofp_event->EdgeAIRyu EventOFPStateChange
+EVENT ofp_event->switches EventOFPStateChange
+EVENT ofp_event->EdgeAIRyu EventOFPPortDescStatsReply
+move onto main mode
+EVENT ofp_event->EdgeAIRyu EventOFPStateChange
+EVENT ofp_event->switches EventOFPStateChange
+EVENT ofp_event->EdgeAIRyu EventOFPPortDescStatsReply
+DATAPATH_ACTIVE dpid=000002f9b0b2454f
+PORTS_DISCOVERED dpid=000002f9b0b2454f ports={'s2': 4294967294, 'v12b': 1, 'v23a': 2, 'v25a': 3}
+WAITING_FOR_SWITCH_ROLES missing=['edgeA', 's3', 's4', 's5', 's6', 's7'] identified=['s2']
+DATAPATH_ACTIVE dpid=000026c5b0a4f34c
+PORTS_DISCOVERED dpid=000026c5b0a4f34c ports={'s7': 4294967294, 'v47b': 1, 'hostB-sw': 2}
+WAITING_FOR_SWITCH_ROLES missing=['edgeA', 's3', 's4', 's5', 's6'] identified=['s2', 's7']
+DATAPATH_ACTIVE dpid=0000fa80ebe1194c
+PORTS_DISCOVERED dpid=0000fa80ebe1194c ports={'s3': 4294967294, 'v23b': 1, 'v34a': 2}
+WAITING_FOR_SWITCH_ROLES missing=['edgeA', 's4', 's5', 's6'] identified=['s2', 's3', 's7']
+DATAPATH_ACTIVE dpid=00002a97c6f41c48
+PORTS_DISCOVERED dpid=00002a97c6f41c48 ports={'s6': 4294967294, 'v56b': 1, 'v64a': 2}
+WAITING_FOR_SWITCH_ROLES missing=['edgeA', 's4', 's5'] identified=['s2', 's3', 's6', 's7']
+<ryu.controller.controller.Datapath object at 0xffff76e8dbd0>
+register Switch<dpid=3271434585423, Port<dpid=3271434585423, port_no=1, LIVE> Port<dpid=3271434585423, port_no=2, LIVE> Port<dpid=3271434585423, port_no=3, LIVE> >
+<ryu.controller.controller.Datapath object at 0xffff76e8d9f0>
+register Switch<dpid=42630514013004, Port<dpid=42630514013004, port_no=1, LIVE> Port<dpid=42630514013004, port_no=2, LIVE> >
+<ryu.controller.controller.Datapath object at 0xffff76e8dfc0>
+register Switch<dpid=275431620155724, Port<dpid=275431620155724, port_no=1, LIVE> Port<dpid=275431620155724, port_no=2, LIVE> >
+<ryu.controller.controller.Datapath object at 0xffff76e8e770>
+register Switch<dpid=46831366315080, Port<dpid=46831366315080, port_no=1, LIVE> Port<dpid=46831366315080, port_no=2, LIVE> >
+move onto main mode
+EVENT ofp_event->EdgeAIRyu EventOFPStateChange
+EVENT ofp_event->switches EventOFPStateChange
+EVENT ofp_event->EdgeAIRyu EventOFPPortDescStatsReply
+move onto main mode
+EVENT ofp_event->EdgeAIRyu EventOFPStateChange
+EVENT ofp_event->switches EventOFPStateChange
+EVENT ofp_event->EdgeAIRyu EventOFPPortDescStatsReply
+move onto main mode
+EVENT ofp_event->EdgeAIRyu EventOFPStateChange
+EVENT ofp_event->switches EventOFPStateChange
+EVENT ofp_event->EdgeAIRyu EventOFPPortDescStatsReply
+DATAPATH_ACTIVE dpid=0000c2b726c53740
+PORTS_DISCOVERED dpid=0000c2b726c53740 ports={'s4': 4294967294, 'v34b': 1, 'v47a': 2, 'v64b': 3}
+WAITING_FOR_SWITCH_ROLES missing=['edgeA', 's5'] identified=['s2', 's3', 's4', 's6', 's7']
+DATAPATH_ACTIVE dpid=000012bb705e754d
+PORTS_DISCOVERED dpid=000012bb705e754d ports={'br-ryu-test': 4294967294, 'v12a': 1, 'hostA-sw': 2}
+WAITING_FOR_SWITCH_ROLES missing=['s5'] identified=['edgeA', 's2', 's3', 's4', 's6', 's7']
+DATAPATH_ACTIVE dpid=0000868028d9e64b
+PORTS_DISCOVERED dpid=0000868028d9e64b ports={'s5': 4294967294, 'v56a': 1, 'v25b': 2}
+ALL_ROLES_IDENTIFIED roles={'edgeA': '000012bb705e754d', 's2': '000002f9b0b2454f', 's3': '0000fa80ebe1194c', 's4': '0000c2b726c53740', 's5': '0000868028d9e64b', 's6': '00002a97c6f41c48', 's7': '000026c5b0a4f34c'}
+<ryu.controller.controller.Datapath object at 0xffff76e8d600>
+register Switch<dpid=214091885262656, Port<dpid=214091885262656, port_no=1, LIVE> Port<dpid=214091885262656, port_no=2, LIVE> Port<dpid=214091885262656, port_no=3, LIVE> >
+<ryu.controller.controller.Datapath object at 0xffff76e8dde0>
+register Switch<dpid=20596253422925, Port<dpid=20596253422925, port_no=1, LIVE> Port<dpid=20596253422925, port_no=2, LIVE> >
+<ryu.controller.controller.Datapath object at 0xffff77349510>
+register Switch<dpid=147884999304779, Port<dpid=147884999304779, port_no=1, LIVE> Port<dpid=147884999304779, port_no=2, LIVE> >
+FLOW_UPDATE_START route=PRIMARY priority=500 cookie=0xea100001
+FLOW_MOD_SENT route=PRIMARY switch=edgeA dpid=000012bb705e754d in=hostA-sw(2) out=v12a(1) eth_type=0x0800 match={'in_port': 2, 'eth_type': 2048, 'ipv4_src': '192.168.100.1', 'ipv4_dst': '192.168.100.2'}
+FLOW_MOD_SENT route=PRIMARY switch=edgeA dpid=000012bb705e754d in=hostA-sw(2) out=v12a(1) eth_type=0x0806 match={'in_port': 2, 'eth_type': 2054}
+FLOW_MOD_SENT route=PRIMARY switch=s2 dpid=000002f9b0b2454f in=v12b(1) out=v23a(2) eth_type=0x0800 match={'in_port': 1, 'eth_type': 2048, 'ipv4_src': '192.168.100.1', 'ipv4_dst': '192.168.100.2'}
+FLOW_MOD_SENT route=PRIMARY switch=s2 dpid=000002f9b0b2454f in=v12b(1) out=v23a(2) eth_type=0x0806 match={'in_port': 1, 'eth_type': 2054}
+FLOW_MOD_SENT route=PRIMARY switch=s3 dpid=0000fa80ebe1194c in=v23b(1) out=v34a(2) eth_type=0x0800 match={'in_port': 1, 'eth_type': 2048, 'ipv4_src': '192.168.100.1', 'ipv4_dst': '192.168.100.2'}
+FLOW_MOD_SENT route=PRIMARY switch=s3 dpid=0000fa80ebe1194c in=v23b(1) out=v34a(2) eth_type=0x0806 match={'in_port': 1, 'eth_type': 2054}
+FLOW_MOD_SENT route=PRIMARY switch=s4 dpid=0000c2b726c53740 in=v34b(1) out=v47a(2) eth_type=0x0800 match={'in_port': 1, 'eth_type': 2048, 'ipv4_src': '192.168.100.1', 'ipv4_dst': '192.168.100.2'}
+FLOW_MOD_SENT route=PRIMARY switch=s4 dpid=0000c2b726c53740 in=v34b(1) out=v47a(2) eth_type=0x0806 match={'in_port': 1, 'eth_type': 2054}
+FLOW_MOD_SENT route=PRIMARY switch=s7 dpid=000026c5b0a4f34c in=v47b(1) out=hostB-sw(2) eth_type=0x0800 match={'in_port': 1, 'eth_type': 2048, 'ipv4_src': '192.168.100.1', 'ipv4_dst': '192.168.100.2'}
+FLOW_MOD_SENT route=PRIMARY switch=s7 dpid=000026c5b0a4f34c in=v47b(1) out=hostB-sw(2) eth_type=0x0806 match={'in_port': 1, 'eth_type': 2054}
+FLOW_MOD_SENT route=PRIMARY switch=s7 dpid=000026c5b0a4f34c in=hostB-sw(2) out=v47b(1) eth_type=0x0800 match={'in_port': 2, 'eth_type': 2048, 'ipv4_src': '192.168.100.2', 'ipv4_dst': '192.168.100.1'}
+FLOW_MOD_SENT route=PRIMARY switch=s7 dpid=000026c5b0a4f34c in=hostB-sw(2) out=v47b(1) eth_type=0x0806 match={'in_port': 2, 'eth_type': 2054}
+FLOW_MOD_SENT route=PRIMARY switch=s4 dpid=0000c2b726c53740 in=v47a(2) out=v34b(1) eth_type=0x0800 match={'in_port': 2, 'eth_type': 2048, 'ipv4_src': '192.168.100.2', 'ipv4_dst': '192.168.100.1'}
+FLOW_MOD_SENT route=PRIMARY switch=s4 dpid=0000c2b726c53740 in=v47a(2) out=v34b(1) eth_type=0x0806 match={'in_port': 2, 'eth_type': 2054}
+FLOW_MOD_SENT route=PRIMARY switch=s3 dpid=0000fa80ebe1194c in=v34a(2) out=v23b(1) eth_type=0x0800 match={'in_port': 2, 'eth_type': 2048, 'ipv4_src': '192.168.100.2', 'ipv4_dst': '192.168.100.1'}
+FLOW_MOD_SENT route=PRIMARY switch=s3 dpid=0000fa80ebe1194c in=v34a(2) out=v23b(1) eth_type=0x0806 match={'in_port': 2, 'eth_type': 2054}
+FLOW_MOD_SENT route=PRIMARY switch=s2 dpid=000002f9b0b2454f in=v23a(2) out=v12b(1) eth_type=0x0800 match={'in_port': 2, 'eth_type': 2048, 'ipv4_src': '192.168.100.2', 'ipv4_dst': '192.168.100.1'}
+FLOW_MOD_SENT route=PRIMARY switch=s2 dpid=000002f9b0b2454f in=v23a(2) out=v12b(1) eth_type=0x0806 match={'in_port': 2, 'eth_type': 2054}
+FLOW_MOD_SENT route=PRIMARY switch=edgeA dpid=000012bb705e754d in=v12a(1) out=hostA-sw(2) eth_type=0x0800 match={'in_port': 1, 'eth_type': 2048, 'ipv4_src': '192.168.100.2', 'ipv4_dst': '192.168.100.1'}
+FLOW_MOD_SENT route=PRIMARY switch=edgeA dpid=000012bb705e754d in=v12a(1) out=hostA-sw(2) eth_type=0x0806 match={'in_port': 1, 'eth_type': 2054}
+FLOW_UPDATE_SENT route=PRIMARY; waiting for barrier replies
+EVENT ofp_event->EdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->EdgeAIRyu EventOFPBarrierReply
+EVENT ofp_event->EdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->EdgeAIRyu EventOFPBarrierReply
+EVENT ofp_event->EdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->EdgeAIRyu EventOFPBarrierReply
+EVENT ofp_event->EdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->EdgeAIRyu EventOFPBarrierReply
+EVENT ofp_event->EdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->EdgeAIRyu EventOFPBarrierReply
+EVENT ofp_event->EdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->EdgeAIRyu EventOFPBarrierReply
+EVENT ofp_event->EdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->EdgeAIRyu EventOFPBarrierReply
+BARRIER_CONFIRMED dpid=0000fa80ebe1194c xid=2267476829 route=PRIMARY
+BARRIER_CONFIRMED dpid=000012bb705e754d xid=1506095621 route=PRIMARY

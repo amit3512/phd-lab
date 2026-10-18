@@ -1,0 +1,119 @@
+/home/jetson6/phd/lab-env/venv/lib/python3.10/site-packages/ryu/lib/hub.py:30: EventletDeprecationWarning: 
+Eventlet is deprecated. It is currently being maintained in bugfix mode, and
+we strongly recommend against using it for new projects.
+
+If you are already using Eventlet, we recommend migrating to a different
+framework.  For more detail see
+https://eventlet.readthedocs.io/en/latest/asyncio/migration.html
+
+  import eventlet
+1 RLock(s) were not greened, to fix this error make sure you run eventlet.monkey_patch() before importing any other modules.
+loading app topology_monitor.py
+loading app ryu.app.rest_topology
+require_app: ryu.topology.switches is required by ryu.app.rest_topology
+loading app ryu.topology.switches
+loading app ryu.controller.ofp_handler
+creating context wsgi
+instantiating app topology_monitor.py of TopologyMonitor
+instantiating app ryu.app.rest_topology of TopologyAPI
+instantiating app ryu.topology.switches of Switches
+instantiating app ryu.controller.ofp_handler of OFPHandler
+BRICK TopologyMonitor
+  CONSUMES EventLinkAdd
+  CONSUMES EventLinkDelete
+  CONSUMES EventSwitchEnter
+  CONSUMES EventSwitchLeave
+BRICK TopologyAPI
+BRICK switches
+  PROVIDES EventLinkAdd TO {'TopologyMonitor': set()}
+  PROVIDES EventLinkDelete TO {'TopologyMonitor': set()}
+  PROVIDES EventSwitchEnter TO {'TopologyMonitor': set()}
+  PROVIDES EventSwitchLeave TO {'TopologyMonitor': set()}
+  CONSUMES EventOFPPacketIn
+  CONSUMES EventHostRequest
+  CONSUMES EventLinkRequest
+  CONSUMES EventOFPPortStatus
+  CONSUMES EventOFPStateChange
+  CONSUMES EventSwitchRequest
+BRICK ofp_event
+  PROVIDES EventOFPPacketIn TO {'switches': {'main'}}
+  PROVIDES EventOFPPortStatus TO {'switches': {'main'}}
+  PROVIDES EventOFPStateChange TO {'switches': {'dead', 'main'}}
+  CONSUMES EventOFPEchoReply
+  CONSUMES EventOFPEchoRequest
+  CONSUMES EventOFPErrorMsg
+  CONSUMES EventOFPHello
+  CONSUMES EventOFPPortDescStatsReply
+  CONSUMES EventOFPPortStatus
+  CONSUMES EventOFPSwitchFeatures
+(8178) wsgi starting up on http://0.0.0.0:8080
+connected socket:<eventlet.greenio.base.GreenSocket object at 0xffffa88fd9c0> address:('127.0.0.1', 53154)
+hello ev <ryu.controller.ofp_event.EventOFPHello object at 0xffffa88ff3a0>
+move onto config mode
+connected socket:<eventlet.greenio.base.GreenSocket object at 0xffffa88fc850> address:('127.0.0.1', 53160)
+hello ev <ryu.controller.ofp_event.EventOFPHello object at 0xffffa87dc280>
+move onto config mode
+connected socket:<eventlet.greenio.base.GreenSocket object at 0xffffa88ff610> address:('127.0.0.1', 53168)
+hello ev <ryu.controller.ofp_event.EventOFPHello object at 0xffffa87dca30>
+move onto config mode
+connected socket:<eventlet.greenio.base.GreenSocket object at 0xffffa88ff760> address:('127.0.0.1', 53180)
+hello ev <ryu.controller.ofp_event.EventOFPHello object at 0xffffa87dd1e0>
+move onto config mode
+connected socket:<eventlet.greenio.base.GreenSocket object at 0xffffa88ff8b0> address:('127.0.0.1', 53192)
+hello ev <ryu.controller.ofp_event.EventOFPHello object at 0xffffa87dd990>
+move onto config mode
+connected socket:<eventlet.greenio.base.GreenSocket object at 0xffffa88ffa00> address:('127.0.0.1', 53202)
+hello ev <ryu.controller.ofp_event.EventOFPHello object at 0xffffa87de140>
+move onto config mode
+connected socket:<eventlet.greenio.base.GreenSocket object at 0xffffa88ffb50> address:('127.0.0.1', 53212)
+hello ev <ryu.controller.ofp_event.EventOFPHello object at 0xffffa87de8f0>
+move onto config mode
+switch features ev version=0x4,msg_type=0x6,msg_len=0x20,xid=0x77c41e87,OFPSwitchFeatures(auxiliary_id=0,capabilities=79,datapath_id=46831366315080,n_buffers=0,n_tables=254)
+move onto main mode
+EVENT ofp_event->switches EventOFPStateChange
+<ryu.controller.controller.Datapath object at 0xffffa88fd600>
+register Switch<dpid=46831366315080, Port<dpid=46831366315080, port_no=1, LIVE> Port<dpid=46831366315080, port_no=2, LIVE> >
+EVENT switches->TopologyMonitor EventSwitchEnter
+switch features ev version=0x4,msg_type=0x6,msg_len=0x20,xid=0x8da4c5c0,OFPSwitchFeatures(auxiliary_id=0,capabilities=79,datapath_id=3271434585423,n_buffers=0,n_tables=254)
+switch features ev version=0x4,msg_type=0x6,msg_len=0x20,xid=0x8273b3e9,OFPSwitchFeatures(auxiliary_id=0,capabilities=79,datapath_id=275431620155724,n_buffers=0,n_tables=254)
+switch features ev version=0x4,msg_type=0x6,msg_len=0x20,xid=0x788a535b,OFPSwitchFeatures(auxiliary_id=0,capabilities=79,datapath_id=42630514013004,n_buffers=0,n_tables=254)
+switch features ev version=0x4,msg_type=0x6,msg_len=0x20,xid=0x56b32de4,OFPSwitchFeatures(auxiliary_id=0,capabilities=79,datapath_id=20596253422925,n_buffers=0,n_tables=254)
+TOPOLOGY_SWITCH_ENTER dpid=00002a97c6f41c48
+switch features ev version=0x4,msg_type=0x6,msg_len=0x20,xid=0x3c78eaee,OFPSwitchFeatures(auxiliary_id=0,capabilities=79,datapath_id=214091885262656,n_buffers=0,n_tables=254)
+switch features ev version=0x4,msg_type=0x6,msg_len=0x20,xid=0x3dbf91e2,OFPSwitchFeatures(auxiliary_id=0,capabilities=79,datapath_id=147884999304779,n_buffers=0,n_tables=254)
+move onto main mode
+EVENT ofp_event->switches EventOFPStateChange
+move onto main mode
+EVENT ofp_event->switches EventOFPStateChange
+move onto main mode
+EVENT ofp_event->switches EventOFPStateChange
+move onto main mode
+EVENT ofp_event->switches EventOFPStateChange
+<ryu.controller.controller.Datapath object at 0xffffa88ff880>
+register Switch<dpid=42630514013004, Port<dpid=42630514013004, port_no=1, LIVE> Port<dpid=42630514013004, port_no=2, LIVE> >
+EVENT switches->TopologyMonitor EventSwitchEnter
+<ryu.controller.controller.Datapath object at 0xffffa88ff730>
+register Switch<dpid=3271434585423, Port<dpid=3271434585423, port_no=1, LIVE> Port<dpid=3271434585423, port_no=2, LIVE> Port<dpid=3271434585423, port_no=3, LIVE> >
+EVENT switches->TopologyMonitor EventSwitchEnter
+<ryu.controller.controller.Datapath object at 0xffffa88ff1f0>
+register Switch<dpid=275431620155724, Port<dpid=275431620155724, port_no=1, LIVE> Port<dpid=275431620155724, port_no=2, LIVE> >
+EVENT switches->TopologyMonitor EventSwitchEnter
+<ryu.controller.controller.Datapath object at 0xffffa88ff5e0>
+register Switch<dpid=20596253422925, Port<dpid=20596253422925, port_no=1, LIVE> Port<dpid=20596253422925, port_no=2, LIVE> >
+EVENT switches->TopologyMonitor EventSwitchEnter
+move onto main mode
+EVENT ofp_event->switches EventOFPStateChange
+move onto main mode
+EVENT ofp_event->switches EventOFPStateChange
+TOPOLOGY_SWITCH_ENTER dpid=000026c5b0a4f34c
+TOPOLOGY_SWITCH_ENTER dpid=000002f9b0b2454f
+TOPOLOGY_SWITCH_ENTER dpid=0000fa80ebe1194c
+TOPOLOGY_SWITCH_ENTER dpid=000012bb705e754d
+<ryu.controller.controller.Datapath object at 0xffffa88ff9d0>
+register Switch<dpid=214091885262656, Port<dpid=214091885262656, port_no=1, LIVE> Port<dpid=214091885262656, port_no=2, LIVE> Port<dpid=214091885262656, port_no=3, LIVE> >
+EVENT switches->TopologyMonitor EventSwitchEnter
+<ryu.controller.controller.Datapath object at 0xffffa88ffb20>
+register Switch<dpid=147884999304779, Port<dpid=147884999304779, port_no=1, LIVE> Port<dpid=147884999304779, port_no=2, LIVE> >
+EVENT switches->TopologyMonitor EventSwitchEnter
+TOPOLOGY_SWITCH_ENTER dpid=0000c2b726c53740
+TOPOLOGY_SWITCH_ENTER dpid=0000868028d9e64b

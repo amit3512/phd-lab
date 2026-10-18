@@ -1,0 +1,602 @@
+/home/jetson6/phd/lab-env/venv/lib/python3.10/site-packages/ryu/lib/hub.py:30: EventletDeprecationWarning: 
+Eventlet is deprecated. It is currently being maintained in bugfix mode, and
+we strongly recommend against using it for new projects.
+
+If you are already using Eventlet, we recommend migrating to a different
+framework.  For more detail see
+https://eventlet.readthedocs.io/en/latest/asyncio/migration.html
+
+  import eventlet
+1 RLock(s) were not greened, to fix this error make sure you run eventlet.monkey_patch() before importing any other modules.
+loading app edge_intelligence_route_updated.py
+loading app ryu.controller.ofp_handler
+instantiating app edge_intelligence_route_updated.py of ForceEdgeAIRyu
+MODEL_NOT_FOUND path=/home/jetson6/phd/lab-env/model_built.joblib; threshold/simulation fallback active
+instantiating app ryu.controller.ofp_handler of OFPHandler
+BRICK ForceEdgeAIRyu
+  CONSUMES EventOFPBarrierReply
+  CONSUMES EventOFPPortDescStatsReply
+  CONSUMES EventOFPPortStatsReply
+  CONSUMES EventOFPSwitchFeatures
+BRICK ofp_event
+  PROVIDES EventOFPBarrierReply TO {'ForceEdgeAIRyu': {'main'}}
+  PROVIDES EventOFPPortDescStatsReply TO {'ForceEdgeAIRyu': {'main'}}
+  PROVIDES EventOFPPortStatsReply TO {'ForceEdgeAIRyu': {'main'}}
+  PROVIDES EventOFPSwitchFeatures TO {'ForceEdgeAIRyu': {'config'}}
+  CONSUMES EventOFPEchoReply
+  CONSUMES EventOFPEchoRequest
+  CONSUMES EventOFPErrorMsg
+  CONSUMES EventOFPHello
+  CONSUMES EventOFPPortDescStatsReply
+  CONSUMES EventOFPPortStatus
+  CONSUMES EventOFPSwitchFeatures
+MONITOR_LOOP_STARTED
+connected socket:<eventlet.greenio.base.GreenSocket object at 0xffff7132a800> address:('127.0.0.1', 39638)
+hello ev <ryu.controller.ofp_event.EventOFPHello object at 0xffff7132b6d0>
+move onto config mode
+connected socket:<eventlet.greenio.base.GreenSocket object at 0xffff7132ac50> address:('127.0.0.1', 39640)
+hello ev <ryu.controller.ofp_event.EventOFPHello object at 0xffff7132be80>
+move onto config mode
+connected socket:<eventlet.greenio.base.GreenSocket object at 0xffff7132ad70> address:('127.0.0.1', 39646)
+hello ev <ryu.controller.ofp_event.EventOFPHello object at 0xffff70cf8670>
+move onto config mode
+connected socket:<eventlet.greenio.base.GreenSocket object at 0xffff7132aec0> address:('127.0.0.1', 39662)
+hello ev <ryu.controller.ofp_event.EventOFPHello object at 0xffff70cf8e20>
+move onto config mode
+connected socket:<eventlet.greenio.base.GreenSocket object at 0xffff7132afe0> address:('127.0.0.1', 39670)
+hello ev <ryu.controller.ofp_event.EventOFPHello object at 0xffff70cf9840>
+move onto config mode
+connected socket:<eventlet.greenio.base.GreenSocket object at 0xffff70cf90f0> address:('127.0.0.1', 39678)
+hello ev <ryu.controller.ofp_event.EventOFPHello object at 0xffff70cf9f30>
+move onto config mode
+connected socket:<eventlet.greenio.base.GreenSocket object at 0xffff70cf9240> address:('127.0.0.1', 39694)
+hello ev <ryu.controller.ofp_event.EventOFPHello object at 0xffff70cfa6e0>
+move onto config mode
+EVENT ofp_event->ForceEdgeAIRyu EventOFPSwitchFeatures
+switch features ev version=0x4,msg_type=0x6,msg_len=0x20,xid=0xd84753f9,OFPSwitchFeatures(auxiliary_id=0,capabilities=79,datapath_id=46831366315080,n_buffers=0,n_tables=254)
+SWITCH_FEATURES_RECEIVED dpid=00002a97c6f41c48
+EVENT ofp_event->ForceEdgeAIRyu EventOFPSwitchFeatures
+switch features ev version=0x4,msg_type=0x6,msg_len=0x20,xid=0xe86cd5d7,OFPSwitchFeatures(auxiliary_id=0,capabilities=79,datapath_id=3271434585423,n_buffers=0,n_tables=254)
+EVENT ofp_event->ForceEdgeAIRyu EventOFPSwitchFeatures
+switch features ev version=0x4,msg_type=0x6,msg_len=0x20,xid=0x50de003,OFPSwitchFeatures(auxiliary_id=0,capabilities=79,datapath_id=147884999304779,n_buffers=0,n_tables=254)
+EVENT ofp_event->ForceEdgeAIRyu EventOFPSwitchFeatures
+switch features ev version=0x4,msg_type=0x6,msg_len=0x20,xid=0xae8d0bbb,OFPSwitchFeatures(auxiliary_id=0,capabilities=79,datapath_id=20596253422925,n_buffers=0,n_tables=254)
+EVENT ofp_event->ForceEdgeAIRyu EventOFPSwitchFeatures
+switch features ev version=0x4,msg_type=0x6,msg_len=0x20,xid=0xabc7308b,OFPSwitchFeatures(auxiliary_id=0,capabilities=79,datapath_id=214091885262656,n_buffers=0,n_tables=254)
+EVENT ofp_event->ForceEdgeAIRyu EventOFPSwitchFeatures
+switch features ev version=0x4,msg_type=0x6,msg_len=0x20,xid=0xbbc5c68a,OFPSwitchFeatures(auxiliary_id=0,capabilities=79,datapath_id=42630514013004,n_buffers=0,n_tables=254)
+EVENT ofp_event->ForceEdgeAIRyu EventOFPSwitchFeatures
+switch features ev version=0x4,msg_type=0x6,msg_len=0x20,xid=0xde9855df,OFPSwitchFeatures(auxiliary_id=0,capabilities=79,datapath_id=275431620155724,n_buffers=0,n_tables=254)
+SWITCH_FEATURES_RECEIVED dpid=000002f9b0b2454f
+SWITCH_FEATURES_RECEIVED dpid=0000868028d9e64b
+SWITCH_FEATURES_RECEIVED dpid=000012bb705e754d
+SWITCH_FEATURES_RECEIVED dpid=0000c2b726c53740
+SWITCH_FEATURES_RECEIVED dpid=000026c5b0a4f34c
+SWITCH_FEATURES_RECEIVED dpid=0000fa80ebe1194c
+move onto main mode
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortDescStatsReply
+move onto main mode
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortDescStatsReply
+DATAPATH_ACTIVE dpid=00002a97c6f41c48
+PORTS_DISCOVERED dpid=00002a97c6f41c48 ports={'v56b': 1, 's6': 4294967294, 'v64a': 2}
+WAITING_FOR_SWITCH_ROLES missing=['br-ryu-test', 's2', 's3', 's4', 's5', 's7'] identified=['s6']
+DATAPATH_ACTIVE dpid=000012bb705e754d
+PORTS_DISCOVERED dpid=000012bb705e754d ports={'v12a': 1, 'br-ryu-test': 4294967294, 'hostA-sw': 2}
+WAITING_FOR_SWITCH_ROLES missing=['s2', 's3', 's4', 's5', 's7'] identified=['s6', 'br-ryu-test']
+move onto main mode
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortDescStatsReply
+move onto main mode
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortDescStatsReply
+move onto main mode
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortDescStatsReply
+move onto main mode
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortDescStatsReply
+move onto main mode
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortDescStatsReply
+DATAPATH_ACTIVE dpid=000002f9b0b2454f
+PORTS_DISCOVERED dpid=000002f9b0b2454f ports={'s2': 4294967294, 'v12b': 1, 'v23a': 2, 'v25a': 3}
+WAITING_FOR_SWITCH_ROLES missing=['s3', 's4', 's5', 's7'] identified=['s6', 'br-ryu-test', 's2']
+DATAPATH_ACTIVE dpid=0000868028d9e64b
+PORTS_DISCOVERED dpid=0000868028d9e64b ports={'s5': 4294967294, 'v56a': 1, 'v25b': 2}
+WAITING_FOR_SWITCH_ROLES missing=['s3', 's4', 's7'] identified=['s6', 'br-ryu-test', 's2', 's5']
+DATAPATH_ACTIVE dpid=0000c2b726c53740
+PORTS_DISCOVERED dpid=0000c2b726c53740 ports={'v34b': 1, 's4': 4294967294, 'v47a': 2, 'v64b': 3}
+WAITING_FOR_SWITCH_ROLES missing=['s3', 's7'] identified=['s6', 'br-ryu-test', 's2', 's5', 's4']
+DATAPATH_ACTIVE dpid=0000fa80ebe1194c
+PORTS_DISCOVERED dpid=0000fa80ebe1194c ports={'v23b': 1, 's3': 4294967294, 'v34a': 2}
+WAITING_FOR_SWITCH_ROLES missing=['s7'] identified=['s6', 'br-ryu-test', 's2', 's5', 's4', 's3']
+DATAPATH_ACTIVE dpid=000026c5b0a4f34c
+PORTS_DISCOVERED dpid=000026c5b0a4f34c ports={'s7': 4294967294, 'v47b': 1, 'hostB-sw': 2}
+ALL_ROLES_IDENTIFIED roles={'s6': '00002a97c6f41c48', 'br-ryu-test': '000012bb705e754d', 's2': '000002f9b0b2454f', 's5': '0000868028d9e64b', 's4': '0000c2b726c53740', 's3': '0000fa80ebe1194c', 's7': '000026c5b0a4f34c'}
+--- Logging error ---
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/logging/__init__.py", line 1100, in emit
+    msg = self.format(record)
+  File "/usr/lib/python3.10/logging/__init__.py", line 943, in format
+    return fmt.format(record)
+  File "/usr/lib/python3.10/logging/__init__.py", line 678, in format
+    record.message = record.getMessage()
+  File "/usr/lib/python3.10/logging/__init__.py", line 368, in getMessage
+    msg = msg % self.args
+TypeError: not all arguments converted during string formatting
+Call stack:
+  File "/home/jetson6/phd/lab-env/venv/lib/python3.10/site-packages/eventlet/greenthread.py", line 272, in main
+    result = function(*args, **kwargs)
+  File "/home/jetson6/phd/lab-env/venv/lib/python3.10/site-packages/ryu/lib/hub.py", line 60, in _launch
+    return func(*args, **kwargs)
+  File "/home/jetson6/phd/lab-env/edge_intelligence_route_updated.py", line 360, in _monitor
+    self._install_route("PRIMARY")
+  File "/home/jetson6/phd/lab-env/edge_intelligence_route_updated.py", line 276, in _install_route
+    self.logger.warning("heyeyeyey...........................",reverse)
+Message: 'heyeyeyey...........................'
+Arguments: ([('s7', 'hostB-sw', 'v47b'), ('s4', 'v47a', 'v34b'), ('s3', 'v34a', 'v23b'), ('s2', 'v23a', 'v12b'), ('br-ryu-test', 'v12a', 'hostA-sw')],)
+FLOW_UPDATE_START route=PRIMARY priority=65535 cookie=0xea100001
+FLOW_MOD_SENT route=PRIMARY switch=br-ryu-test dpid=000012bb705e754d in=hostA-sw(2) out=v12a(1) eth_type=0x0800
+FLOW_MOD_SENT route=PRIMARY switch=br-ryu-test dpid=000012bb705e754d in=hostA-sw(2) out=v12a(1) eth_type=0x0806
+FLOW_MOD_SENT route=PRIMARY switch=s2 dpid=000002f9b0b2454f in=v12b(1) out=v23a(2) eth_type=0x0800
+FLOW_MOD_SENT route=PRIMARY switch=s2 dpid=000002f9b0b2454f in=v12b(1) out=v23a(2) eth_type=0x0806
+FLOW_MOD_SENT route=PRIMARY switch=s3 dpid=0000fa80ebe1194c in=v23b(1) out=v34a(2) eth_type=0x0800
+FLOW_MOD_SENT route=PRIMARY switch=s3 dpid=0000fa80ebe1194c in=v23b(1) out=v34a(2) eth_type=0x0806
+FLOW_MOD_SENT route=PRIMARY switch=s4 dpid=0000c2b726c53740 in=v34b(1) out=v47a(2) eth_type=0x0800
+FLOW_MOD_SENT route=PRIMARY switch=s4 dpid=0000c2b726c53740 in=v34b(1) out=v47a(2) eth_type=0x0806
+FLOW_MOD_SENT route=PRIMARY switch=s7 dpid=000026c5b0a4f34c in=v47b(1) out=hostB-sw(2) eth_type=0x0800
+FLOW_MOD_SENT route=PRIMARY switch=s7 dpid=000026c5b0a4f34c in=v47b(1) out=hostB-sw(2) eth_type=0x0806
+FLOW_MOD_SENT route=PRIMARY switch=s7 dpid=000026c5b0a4f34c in=hostB-sw(2) out=v47b(1) eth_type=0x0800
+FLOW_MOD_SENT route=PRIMARY switch=s7 dpid=000026c5b0a4f34c in=hostB-sw(2) out=v47b(1) eth_type=0x0806
+FLOW_MOD_SENT route=PRIMARY switch=s4 dpid=0000c2b726c53740 in=v47a(2) out=v34b(1) eth_type=0x0800
+FLOW_MOD_SENT route=PRIMARY switch=s4 dpid=0000c2b726c53740 in=v47a(2) out=v34b(1) eth_type=0x0806
+FLOW_MOD_SENT route=PRIMARY switch=s3 dpid=0000fa80ebe1194c in=v34a(2) out=v23b(1) eth_type=0x0800
+FLOW_MOD_SENT route=PRIMARY switch=s3 dpid=0000fa80ebe1194c in=v34a(2) out=v23b(1) eth_type=0x0806
+FLOW_MOD_SENT route=PRIMARY switch=s2 dpid=000002f9b0b2454f in=v23a(2) out=v12b(1) eth_type=0x0800
+FLOW_MOD_SENT route=PRIMARY switch=s2 dpid=000002f9b0b2454f in=v23a(2) out=v12b(1) eth_type=0x0806
+FLOW_MOD_SENT route=PRIMARY switch=br-ryu-test dpid=000012bb705e754d in=v12a(1) out=hostA-sw(2) eth_type=0x0800
+FLOW_MOD_SENT route=PRIMARY switch=br-ryu-test dpid=000012bb705e754d in=v12a(1) out=hostA-sw(2) eth_type=0x0806
+FLOW_UPDATE_SENT route=PRIMARY; waiting for barrier replies
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPBarrierReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPBarrierReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPBarrierReply
+BARRIER_CONFIRMED dpid=00002a97c6f41c48 xid=3628553214 route=PRIMARY
+BARRIER_CONFIRMED dpid=000012bb705e754d xid=2928479172 route=PRIMARY
+BARRIER_CONFIRMED dpid=000002f9b0b2454f xid=3899446752 route=PRIMARY
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPBarrierReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPBarrierReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPBarrierReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPBarrierReply
+BARRIER_CONFIRMED dpid=0000868028d9e64b xid=84795400 route=PRIMARY
+BARRIER_CONFIRMED dpid=0000fa80ebe1194c xid=3734525416 route=PRIMARY
+BARRIER_CONFIRMED dpid=000026c5b0a4f34c xid=3150300819 route=PRIMARY
+BARRIER_CONFIRMED dpid=0000c2b726c53740 xid=2881958036 route=PRIMARY
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+ROUTE_DECISION PRIMARY -> ALTERNATE triggered by Random Forest model
+--- Logging error ---
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/logging/__init__.py", line 1100, in emit
+    msg = self.format(record)
+  File "/usr/lib/python3.10/logging/__init__.py", line 943, in format
+    return fmt.format(record)
+  File "/usr/lib/python3.10/logging/__init__.py", line 678, in format
+    record.message = record.getMessage()
+  File "/usr/lib/python3.10/logging/__init__.py", line 368, in getMessage
+    msg = msg % self.args
+TypeError: not all arguments converted during string formatting
+Call stack:
+  File "/home/jetson6/phd/lab-env/venv/lib/python3.10/site-packages/eventlet/greenthread.py", line 272, in main
+    result = function(*args, **kwargs)
+  File "/home/jetson6/phd/lab-env/venv/lib/python3.10/site-packages/ryu/lib/hub.py", line 60, in _launch
+    return func(*args, **kwargs)
+  File "/home/jetson6/phd/lab-env/edge_intelligence_route_updated.py", line 381, in _monitor
+    self._install_route("ALTERNATE")
+  File "/home/jetson6/phd/lab-env/edge_intelligence_route_updated.py", line 276, in _install_route
+    self.logger.warning("heyeyeyey...........................",reverse)
+Message: 'heyeyeyey...........................'
+Arguments: ([('s7', 'hostB-sw', 'v47b'), ('s4', 'v47a', 'v64b'), ('s6', 'v64a', 'v56b'), ('s5', 'v56a', 'v25b'), ('s2', 'v25a', 'v12b'), ('br-ryu-test', 'v12a', 'hostA-sw')],)
+FLOW_UPDATE_START route=ALTERNATE priority=65535 cookie=0xea100001
+FLOW_MOD_SENT route=ALTERNATE switch=br-ryu-test dpid=000012bb705e754d in=hostA-sw(2) out=v12a(1) eth_type=0x0800
+FLOW_MOD_SENT route=ALTERNATE switch=br-ryu-test dpid=000012bb705e754d in=hostA-sw(2) out=v12a(1) eth_type=0x0806
+FLOW_MOD_SENT route=ALTERNATE switch=s2 dpid=000002f9b0b2454f in=v12b(1) out=v25a(3) eth_type=0x0800
+FLOW_MOD_SENT route=ALTERNATE switch=s2 dpid=000002f9b0b2454f in=v12b(1) out=v25a(3) eth_type=0x0806
+FLOW_MOD_SENT route=ALTERNATE switch=s5 dpid=0000868028d9e64b in=v25b(2) out=v56a(1) eth_type=0x0800
+FLOW_MOD_SENT route=ALTERNATE switch=s5 dpid=0000868028d9e64b in=v25b(2) out=v56a(1) eth_type=0x0806
+FLOW_MOD_SENT route=ALTERNATE switch=s6 dpid=00002a97c6f41c48 in=v56b(1) out=v64a(2) eth_type=0x0800
+FLOW_MOD_SENT route=ALTERNATE switch=s6 dpid=00002a97c6f41c48 in=v56b(1) out=v64a(2) eth_type=0x0806
+FLOW_MOD_SENT route=ALTERNATE switch=s4 dpid=0000c2b726c53740 in=v64b(3) out=v47a(2) eth_type=0x0800
+FLOW_MOD_SENT route=ALTERNATE switch=s4 dpid=0000c2b726c53740 in=v64b(3) out=v47a(2) eth_type=0x0806
+FLOW_MOD_SENT route=ALTERNATE switch=s7 dpid=000026c5b0a4f34c in=v47b(1) out=hostB-sw(2) eth_type=0x0800
+FLOW_MOD_SENT route=ALTERNATE switch=s7 dpid=000026c5b0a4f34c in=v47b(1) out=hostB-sw(2) eth_type=0x0806
+FLOW_MOD_SENT route=ALTERNATE switch=s7 dpid=000026c5b0a4f34c in=hostB-sw(2) out=v47b(1) eth_type=0x0800
+FLOW_MOD_SENT route=ALTERNATE switch=s7 dpid=000026c5b0a4f34c in=hostB-sw(2) out=v47b(1) eth_type=0x0806
+FLOW_MOD_SENT route=ALTERNATE switch=s4 dpid=0000c2b726c53740 in=v47a(2) out=v64b(3) eth_type=0x0800
+FLOW_MOD_SENT route=ALTERNATE switch=s4 dpid=0000c2b726c53740 in=v47a(2) out=v64b(3) eth_type=0x0806
+FLOW_MOD_SENT route=ALTERNATE switch=s6 dpid=00002a97c6f41c48 in=v64a(2) out=v56b(1) eth_type=0x0800
+FLOW_MOD_SENT route=ALTERNATE switch=s6 dpid=00002a97c6f41c48 in=v64a(2) out=v56b(1) eth_type=0x0806
+FLOW_MOD_SENT route=ALTERNATE switch=s5 dpid=0000868028d9e64b in=v56a(1) out=v25b(2) eth_type=0x0800
+FLOW_MOD_SENT route=ALTERNATE switch=s5 dpid=0000868028d9e64b in=v56a(1) out=v25b(2) eth_type=0x0806
+FLOW_MOD_SENT route=ALTERNATE switch=s2 dpid=000002f9b0b2454f in=v25a(3) out=v12b(1) eth_type=0x0800
+FLOW_MOD_SENT route=ALTERNATE switch=s2 dpid=000002f9b0b2454f in=v25a(3) out=v12b(1) eth_type=0x0806
+FLOW_MOD_SENT route=ALTERNATE switch=br-ryu-test dpid=000012bb705e754d in=v12a(1) out=hostA-sw(2) eth_type=0x0800
+FLOW_MOD_SENT route=ALTERNATE switch=br-ryu-test dpid=000012bb705e754d in=v12a(1) out=hostA-sw(2) eth_type=0x0806
+FLOW_UPDATE_SENT route=ALTERNATE; waiting for barrier replies
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPBarrierReply
+BARRIER_CONFIRMED dpid=00002a97c6f41c48 xid=3628553222 route=ALTERNATE
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPBarrierReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPBarrierReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPBarrierReply
+BARRIER_CONFIRMED dpid=000012bb705e754d xid=2928479180 route=ALTERNATE
+BARRIER_CONFIRMED dpid=0000fa80ebe1194c xid=3734525420 route=ALTERNATE
+BARRIER_CONFIRMED dpid=000002f9b0b2454f xid=3899446760 route=ALTERNATE
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPBarrierReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPBarrierReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPBarrierReply
+BARRIER_CONFIRMED dpid=000026c5b0a4f34c xid=3150300827 route=ALTERNATE
+BARRIER_CONFIRMED dpid=0000c2b726c53740 xid=2881958044 route=ALTERNATE
+BARRIER_CONFIRMED dpid=0000868028d9e64b xid=84795408 route=ALTERNATE
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
+EVENT ofp_event->ForceEdgeAIRyu EventOFPPortStatsReply
