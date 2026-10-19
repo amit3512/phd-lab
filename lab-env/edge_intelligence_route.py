@@ -13,7 +13,7 @@ from ryu.lib import hub
 from ryu.ofproto import ofproto_v1_3
 
 # Import the Real-Time Training Component
-from rftc import RealTimeTrainingComponent
+from rftc_oct19_updated import RealTimeTrainingComponent
 
 # Topology and Role Definitions for the 7-Switch Fabric
 REQUIRED_ROLES = ["br-ryu-test", "s2", "s3", "s4", "s5", "s6", "s7"]
@@ -273,8 +273,8 @@ class ForceEdgeAIRyu(app_manager.RyuApp):
 
         forward = PRIMARY_FORWARD if route == "PRIMARY" else ALTERNATE_FORWARD
         reverse = [(role, out_port, in_port) for role, in_port, out_port in reversed(forward)]
-        self.logger.warning("heyeyeyey...........................",reverse)
-        self.logger.warning("FLOW_UPDATE_START route=%s priority=%d cookie=0x%x", route, PRIORITY, COOKIE)
+        # self.logger.warning("heyeyeyey...........................",reverse)
+        self.logger.warning(forward,reverse,"FLOW_UPDATE_START route=%s priority=%d cookie=0x%x", route, PRIORITY, COOKIE)
 
         for role in sorted(REQUIRED_ROLES):
             dpid = self.roles[role]

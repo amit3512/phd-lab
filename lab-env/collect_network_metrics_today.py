@@ -8,10 +8,11 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 INTERVAL = 5
-OUTPUT = Path("network_metrics_20261015.csv")
+OUTPUT = Path("network_traffic_metrics_oct19.csv")
 
-# Six-switch topology only; exclude br-ryu-test and LOCAL ports.
+# Full-fabric topology: Includes br-ryu-test (ingress) + switches s2 through s7
 PORTS = {
+    "br-ryu-test": ["v12a", "hostA-sw"],
     "s2": ["v23a", "v25a"],
     "s3": ["v23b", "v34a"],
     "s4": ["v34b", "v47a", "v64b"],
@@ -151,7 +152,8 @@ def main():
             previous = current
             previous_time = sample_time
             handle.flush()
-            print(f"{timestamp}: recorded {count}/12 ports")
+            # Total expected ports across 7 switches is now 14
+            print(f"{timestamp}: recorded {count}/14 ports")
 
             time.sleep(max(0, INTERVAL - (time.monotonic() - cycle_start)))
 

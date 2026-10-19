@@ -9,8 +9,8 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.pipeline import Pipeline
 from sklearn.metrics import accuracy_score, classification_report
 
-CSV = Path("network_metrics_20261015.csv")
-MODEL_FILE = Path("congestion_rf.joblib")
+CSV = Path("network_traffic_metrics_oct19.csv")
+MODEL_FILE = Path("model_built_oct19.joblib")
 
 # Deliberately low threshold for the initial experiment.
 THRESHOLD_MBPS = 0.1

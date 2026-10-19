@@ -37,7 +37,7 @@ class RealTimeTrainingComponent:
         return False
 
     # def retrain_model(self, current_model, features, model_path="congestion_rf.joblib"):
-    def retrain_model(self, current_model, features, model_path="built_model.joblib"):
+    def retrain_model(self, current_model, features, model_path="model_built_oct19.joblib"):
     
         """Retrains the Random Forest model on accumulated live buffer data."""
         try:
