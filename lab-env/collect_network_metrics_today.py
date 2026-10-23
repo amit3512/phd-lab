@@ -13,7 +13,7 @@ OUTPUT = Path("network_traffic_metrics_oct19.csv")
 # Full-fabric topology: Includes br-ryu-test (ingress) + switches s2 through s7
 PORTS = {
     "br-ryu-test": ["v12a", "hostA-sw"],
-    "s2": ["v23a", "v25a"],
+    "s2": ["v12b", "v23a", "v25a"],
     "s3": ["v23b", "v34a"],
     "s4": ["v34b", "v47a", "v64b"],
     "s5": ["v25b", "v56a"],

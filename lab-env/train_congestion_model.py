@@ -10,15 +10,22 @@ from sklearn.pipeline import Pipeline
 from sklearn.metrics import accuracy_score, classification_report
 
 CSV = Path("network_traffic_metrics_oct19.csv")
-MODEL_FILE = Path("model_built_oct19.joblib")
+MODEL_FILE = Path("model_built_oct21_updated.joblib")
 
 # Deliberately low threshold for the initial experiment.
 THRESHOLD_MBPS = 0.1
 
 CATEGORICAL = ["switch", "port"]
+
+# NUMERIC = [
+#     "rx_mbps", "tx_mbps", "rx_pps", "tx_pps",
+#     "rx_drops", "tx_drops", "rx_errors", "tx_errors",
+# ]
+
 NUMERIC = [
+    "rx_packets", "tx_packets", "rx_bytes", "tx_bytes",  # <-- Add these four features
     "rx_mbps", "tx_mbps", "rx_pps", "tx_pps",
-    "rx_drops", "tx_drops", "rx_errors", "tx_errors",
+    "rx_drops", "tx_drops", "rx_errors", "tx_errors"
 ]
 FEATURES = CATEGORICAL + NUMERIC
 
