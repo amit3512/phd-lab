@@ -7,7 +7,7 @@ from sklearn.pipeline import Pipeline
 
 class RealTimeTrainingComponent:
     # def __init__(self, logger, max_buffer_size=2000, retrain_interval=30, model_path="model_built_oct19.joblib"):
-    def __init__(self, logger, max_buffer_size=2000, retrain_interval=30, model_path="model_built_oct21_updated.joblib"):
+    def __init__(self, logger, max_buffer_size=2000, retrain_interval=30, model_path="model_built_updated.joblib"):
         self.logger = logger
         self.training_buffer = collections.deque(maxlen=max_buffer_size)
         self.retrain_interval = retrain_interval  # retrain every N data cycles
