@@ -341,7 +341,9 @@ class EdgeIntelligenceRoute(app_manager.RyuApp):
         dpid_s7 = self._get_dpid_by_name("s7")
 
         HOST_A_PORT = 2  # hostA-sw on s1
-        HOST_B_PORT = 1  # hostB-sw on s7
+        # HOST_B_PORT = 1  # hostB-sw on s7
+        # HOST_B_PORT = 2  # hostB-sw on s7
+
 
         # --- 1. FORWARD PATH ---
         for i in range(len(path) - 1):

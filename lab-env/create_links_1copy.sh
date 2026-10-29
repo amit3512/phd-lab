@@ -130,11 +130,11 @@ fi
 sudo ip link set hostB-sw up 2>/dev/null || true
 run_ovs -- --may-exist add-port s7 hostB-sw
 
-# Setup hostB9 <-> s9 (IP: 192.168.109.2/24)
+# Setup hostB9 <-> s9 (IP: 192.168.108.2/24)
 if ! ip link show hostB9 >/dev/null 2>&1; then
     sudo ip link add hostB9 type veth peer name hostB9-sw
     sudo ip link set hostB9 netns sdnB
-    sudo ip netns exec sdnB ip addr add 192.168.109.2/24 dev hostB9 || true
+    sudo ip netns exec sdnB ip addr add 192.168.108.2/24 dev hostB9 || true
     sudo ip netns exec sdnB ip link set hostB9 up
 fi
 sudo ip link set hostB9-sw up 2>/dev/null || true
