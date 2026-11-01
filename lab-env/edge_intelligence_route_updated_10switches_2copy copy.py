@@ -381,18 +381,14 @@ class EdgeIntelligenceRoute(app_manager.RyuApp):
 
         # # --- FULLY DYNAMIC TOPOLOGY-DISCOVERED HOST PORTS ---
         # # HOST_A_PORT = self._get_host_port(start_dpid)
-        # HOST_A_PORT = 2
+        HOST_A_PORT = 2
 
         # # HOST_B_PORT = self._get_host_port(end_dpid)
-        # HOST_B_PORT = 1
+        HOST_B_PORT = 1
 
-        # self.logger.info("Topology-Discovered Host Ports -> Source Port: %d, Destination Port: %d", 
-        #                          HOST_A_PORT, HOST_B_PORT)
+        self.logger.info("Topology-Discovered Host Ports -> Source Port: %d, Destination Port: %d", 
+                                 HOST_A_PORT, HOST_B_PORT)
 
-        # --- 100% DYNAMIC: Found purely via NetworkX topology exclusion ---
-        # It doesn't care if it's s1, s8, s7, s9, or a brand new switch you add tomorrow.
-        HOST_A_PORT = self._get_host_port(start_dpid)
-        HOST_B_PORT = self._get_host_port(end_dpid)
         self.logger.info("Auto-Discovered Host Ports -> Source Switch %s (Port %d), Destination Switch %s (Port %d)", 
                          self._get_switch_name(start_dpid), HOST_A_PORT, 
                          self._get_switch_name(end_dpid), HOST_B_PORT)
