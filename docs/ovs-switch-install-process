@@ -90,7 +90,7 @@ These switches already exist in your current environment.
 Bash
 
 ```
-for br in s2 s3 s4 s5 s6 s7; do
+for br in s1 s2 s3 s4 s5 s6 s7; do
   sudo ovs-vsctl --may-exist add-br "$br"
 
   sudo ovs-vsctl set bridge "$br" \
@@ -100,6 +100,14 @@ for br in s2 s3 s4 s5 s6 s7; do
     tcp:127.0.0.1:6653
 done
 ```
+
+
+
+
+
+
+
+
 
 The `netdev` setting is important because your Jetson 6 kernel does not currently have the OVS kernel module available.
 
@@ -128,7 +136,7 @@ Check their datapath type, controller status and datapath IDs:
 Bash
 
 ```
-for br in br-ryu-test s2 s3 s4 s5 s6 s7; do
+for br in s1 s2 s3 s4 s5 s6 s7; do
   echo "===== $br ====="
 
   sudo ovs-vsctl get Bridge "$br" datapath_type
@@ -203,7 +211,7 @@ while read -r a br_a b br_b; do
     ovs-vsctl --may-exist add-port "$br_a" "$a"
     ovs-vsctl --may-exist add-port "$br_b" "$b"
 done <<'LINKS'
-v12a br-ryu-test v12b s2
+v12a s1 v12b s2
 v23a s2 v23b s3
 v34a s3 v34b s4
 v47a s4 v47b s7

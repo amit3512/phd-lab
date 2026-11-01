@@ -521,46 +521,96 @@ class EdgeIntelligenceRoute(app_manager.RyuApp):
                     last_datapath_rev.send_msg(mod)
                     self.logger.info("<- Installed FINAL REVERSE rule on br-ryu-test: in_port=%s => out_port=%s (hostA)", in_port_from_core, HOST_A_PORT)
 
+    # def _get_switch_name(self, dpid):
+    #     dpid_hex = f"{dpid:016x}"
+    #     dpid_map = {
+    #         "000012bb705e754d": "br-ryu-test",
+    #         "00006a95cb223a46": "br-test",
+    #         "000002f9b0b2454f": "s2",
+    #         "0000fa80ebe1194c": "s3",
+    #         "0000c2b726c53740": "s4",
+    #         "0000868028d9e64b": "s5",
+    #         "00002a97c6f41c48": "s6",
+    #         "000026c5b0a4f34c": "s7"
+    #     }
+    #     return dpid_map.get(dpid_hex, f"s{dpid}")
+
+    # def _get_dpid_by_name(self, name):
+    #     name_map = {
+    #         "br-ryu-test": 0x12bb705e754d,
+    #         "br-test": 0x6a95cb223a46,
+    #         "s2": 0x02f9b0b2454f,
+    #         "s3": 0xfa80ebe1194c,
+    #         "s4": 0xc2b726c53740,
+    #         "s5": 0x868028d9e64b,
+    #         "s6": 0x2a97c6f41c48,
+    #         "s7": 0x26c5b0a4f34c
+    #     }
+    #     hex_val = name_map.get(name)
+    #     return hex_val if hex_val else None
+
+    # def _get_name_by_dpid(self, dpid):
+    #     """Translates an integer DPID back to its name using your existing mapping."""
+    #     name_map = {
+    #         "br-ryu-test": 0x12bb705e754d,
+    #         "br-test": 0x6a95cb223a46,
+    #         "s2": 0x02f9b0b2454f,
+    #         "s3": 0xfa80ebe1194c,
+    #         "s4": 0xc2b726c53740,
+    #         "s5": 0x868028d9e64b,
+    #         "s6": 0x2a97c6f41c48,
+    #         "s7": 0x26c5b0a4f34c
+    #     }
+    #     # Invert the dictionary (value -> key) dynamically
+    #     reverse_map = {v: k for k, v in name_map.items()}
+    #     return reverse_map.get(dpid, f"unknown({dpid})")
+
     def _get_switch_name(self, dpid):
-        dpid_hex = f"{dpid:016x}"
-        dpid_map = {
-            "000012bb705e754d": "br-ryu-test",
-            "00006a95cb223a46": "br-test",
-            "000002f9b0b2454f": "s2",
-            "0000fa80ebe1194c": "s3",
-            "0000c2b726c53740": "s4",
-            "0000868028d9e64b": "s5",
-            "00002a97c6f41c48": "s6",
-            "000026c5b0a4f34c": "s7"
-        }
-        return dpid_map.get(dpid_hex, f"s{dpid}")
+            if isinstance(dpid, int):
+                dpid_hex = f"{dpid:016x}"
+            else:
+                dpid_hex = str(dpid).lower().strip('"').zfill(16)
+                
+            dpid_map = {
+                "00009e128db14142": "br-ryu-test",
+                # Add s1's exact DPID hex string here when available:
+                # "0000...": "s1",
+                "000096be0daa8141": "s2",
+                "00004e6b10219741": "s3",
+                "0000defaf1187e47": "s4",
+                "0000fab349a17c45": "s5",
+                "00008e2525ff4142": "s6",
+                "000096b59855334c": "s7"
+            }
+            return dpid_map.get(dpid_hex, f"s{dpid}")   
 
     def _get_dpid_by_name(self, name):
         name_map = {
-            "br-ryu-test": 0x12bb705e754d,
-            "br-test": 0x6a95cb223a46,
-            "s2": 0x02f9b0b2454f,
-            "s3": 0xfa80ebe1194c,
-            "s4": 0xc2b726c53740,
-            "s5": 0x868028d9e64b,
-            "s6": 0x2a97c6f41c48,
-            "s7": 0x26c5b0a4f34c
+            "br-ryu-test": 0x00009e128db14142,
+            "s1": 0x0000000000000001, # Update with s1 if used
+            "s2": 0x000096be0daa8141,
+            "s3": 0x00004e6b10219741,
+            "s4": 0x0000defaf1187e47,
+            "s5": 0x0000fab349a17c45,
+            "s6": 0x00008e2525ff4142,
+            "s7": 0x000096b59855334c
         }
-        hex_val = name_map.get(name)
-        return hex_val if hex_val else None
+        return name_map.get(name)
 
     def _get_name_by_dpid(self, dpid):
-        """Translates an integer DPID back to its name using your existing mapping."""
+        """Translates an integer or hex DPID back to its name using live OVS mapping."""
+        if isinstance(dpid, int):
+            dpid_hex = f"{dpid:016x}"
+        else:
+            dpid_hex = str(dpid).lower().strip('"').zfill(16)
+            
         name_map = {
-            "br-ryu-test": 0x12bb705e754d,
-            "br-test": 0x6a95cb223a46,
-            "s2": 0x02f9b0b2454f,
-            "s3": 0xfa80ebe1194c,
-            "s4": 0xc2b726c53740,
-            "s5": 0x868028d9e64b,
-            "s6": 0x2a97c6f41c48,
-            "s7": 0x26c5b0a4f34c
+            "00009e128db14142": "br-ryu-test",
+            "000096be0daa8141": "s2",
+            "00004e6b10219741": "s3",
+            "0000defaf1187e47": "s4",
+            "0000fab349a17c45": "s5",
+            "00008e2525ff4142": "s6",
+            "000096b59855334c": "s7"
         }
-        # Invert the dictionary (value -> key) dynamically
-        reverse_map = {v: k for k, v in name_map.items()}
-        return reverse_map.get(dpid, f"unknown({dpid})")
+        return name_map.get(dpid_hex, f"s{dpid}")

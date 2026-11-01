@@ -244,26 +244,30 @@ class EdgeIntelligenceRoute(app_manager.RyuApp):
 
     @set_ev_cls(ofp_event.EventOFPPacketIn, MAIN_DISPATCHER)
     def _packet_in_handler(self, ev):
-        """Handles packet-ins, specifically flooding ARP packets so hosts can resolve MACs without a manual bridge."""
-        msg = ev.msg
-        datapath = msg.datapath
-        ofproto = datapath.ofproto
-        parser = datapath.ofproto_parser
-        in_port = msg.match['in_port']
+        try:
+            """Handles packet-ins, specifically flooding ARP packets so hosts can resolve MACs without a manual bridge."""
+            msg = ev.msg
+            datapath = msg.datapath
+            ofproto = datapath.ofproto
+            parser = datapath.ofproto_parser
+            in_port = msg.match['in_port']
+            # self.logger.info("DEBUG: Packet-in received from switch %s", datapath.id)
 
-        pkt = packet.Packet(msg.data)
-        eth = pkt.get_protocol(ethernet.ethernet)
+            pkt = packet.Packet(msg.data)
+            eth = pkt.get_protocol(ethernet.ethernet)
 
-        if eth and eth.ethertype == 0x0806:  # ARP packet
-            actions = [parser.OFPActionOutput(ofproto.OFPP_FLOOD)]
-            out = parser.OFPPacketOut(
-                datapath=datapath,
-                buffer_id=msg.buffer_id,
-                in_port=in_port,
-                actions=actions,
-                data=msg.data,
-            )
-            datapath.send_msg(out)
+            if eth and eth.ethertype == 0x0806:  # ARP packet
+                actions = [parser.OFPActionOutput(ofproto.OFPP_FLOOD)]
+                out = parser.OFPPacketOut(
+                    datapath=datapath,
+                    buffer_id=msg.buffer_id,
+                    in_port=in_port,
+                    actions=actions,
+                    data=msg.data,
+                )
+                datapath.send_msg(out)
+        except Exception as e:
+            self.logger.error("ERROR in _packet_in_handler: %s", str(e), exc_info=True)
 
     def _monitor_worker(self):
         while True:
@@ -438,8 +442,8 @@ class EdgeIntelligenceRoute(app_manager.RyuApp):
 
         
         # FIXED: Dynamically discover destination host port instead of hardcoding 1 (port 1 is v47b core link!)
-        HOST_B_PORT = self._get_host_port(end_dpid)
-        HOST_B_PORT = 1
+        # HOST_B_PORT = self._get_host_port(end_dpid)
+        HOST_B_PORT = 2
 
         self.logger.info("Dynamic Host Port Resolution -> Source Switch %s (Port %s), Destination Switch %s (Port %s)", 
                          start_switch_name, HOST_A_PORT, 
@@ -586,50 +590,97 @@ class EdgeIntelligenceRoute(app_manager.RyuApp):
                     )
                     last_datapath_rev.send_msg(mod)
 
+    # def _get_switch_name(self, dpid):
+    #     dpid_hex = f"{dpid:016x}"
+    #     dpid_map = {
+    #         "00002e67fb1c3f4a": "s1",
+    #         "0000aa0ad704974e": "s2",
+    #         "0000aab0a554e144": "s3",
+    #         "0000025d98ecd84e": "s4",
+    #         "0000e26c45724a4e": "s5",
+    #         "0000aeb5f54b6243": "s6",
+    #         "0000428ded77364d": "s7",
+    #         "0000560b24a8a143": "s8",
+    #         "0000da8ceff6e245": "s9",
+    #         "00005e8c84b9c046": "s10"
+    #     }
+    #     return dpid_map.get(dpid_hex, f"s{dpid}")
+
+    # def _get_dpid_by_name(self, name):
+    #     name_map = {
+    #         "s1": 0x2e67fb1c3f4a,
+    #         "s2": 0xaa0ad704974e,
+    #         "s3": 0xaab0a554e144,
+    #         "s4": 0x25d98ecd84e,
+    #         "s5": 0xe26c45724a4e,
+    #         "s6": 0xaeb5f54b6243,
+    #         "s7": 0x428ded77364d,
+    #         "s8": 0x560b24a8a143,
+    #         "s9": 0xda8ceff6e245,
+    #         "s10": 0x5e8c84b9c046
+    #     }
+    #     hex_val = name_map.get(name)
+    #     return hex_val if hex_val else None
+
+    # def _get_name_by_dpid(self, dpid):
+    #     name_map = {
+    #         "s1": 0x2e67fb1c3f4a,
+    #         "s2": 0xaa0ad704974e,
+    #         "s3": 0xaab0a554e144,
+    #         "s4": 0x25d98ecd84e,
+    #         "s5": 0xe26c45724a4e,
+    #         "s6": 0xaeb5f54b6243,
+    #         "s7": 0x428ded77364d,
+    #         "s8": 0x560b24a8a143,
+    #         "s9": 0xda8ceff6e245,
+    #         "s10": 0x5e8c84b9c046
+    #     }
+    #     reverse_map = {v: k for k, v in name_map.items()}
+    #     return reverse_map.get(dpid, f"unknown({dpid})")
     def _get_switch_name(self, dpid):
         dpid_hex = f"{dpid:016x}"
         dpid_map = {
-            "00002e67fb1c3f4a": "s1",
-            "0000aa0ad704974e": "s2",
-            "0000aab0a554e144": "s3",
-            "0000025d98ecd84e": "s4",
-            "0000e26c45724a4e": "s5",
-            "0000aeb5f54b6243": "s6",
-            "0000428ded77364d": "s7",
-            "0000560b24a8a143": "s8",
-            "0000da8ceff6e245": "s9",
-            "00005e8c84b9c046": "s10"
+            "00002a51c408ed4f": "s1",
+            "0000d6b73a919945": "s2",
+            "0000ba70b37fd047": "s3",
+            "00009a7798e03a4d": "s4",
+            "00002eb091cbb744": "s5",
+            "00003687ed1d8946": "s6",
+            "0000a6fae9710143": "s7",
+            "00008a14cedaae47": "s8",
+            "0000f69f39565741": "s9",
+            "00004aab8344f142": "s10"
         }
         return dpid_map.get(dpid_hex, f"s{dpid}")
 
     def _get_dpid_by_name(self, name):
         name_map = {
-            "s1": 0x2e67fb1c3f4a,
-            "s2": 0xaa0ad704974e,
-            "s3": 0xaab0a554e144,
-            "s4": 0x25d98ecd84e,
-            "s5": 0xe26c45724a4e,
-            "s6": 0xaeb5f54b6243,
-            "s7": 0x428ded77364d,
-            "s8": 0x560b24a8a143,
-            "s9": 0xda8ceff6e245,
-            "s10": 0x5e8c84b9c046
+            "s1": 0x2a51c408ed4f,
+            "s2": 0xd6b73a919945,
+            "s3": 0xba70b37fd047,
+            "s4": 0x9a7798e03a4d,
+            "s5": 0x2eb091cbb744,
+            "s6": 0x3687ed1d8946,
+            "s7": 0xa6fae9710143,
+            "s8": 0x8a14cedaae47,
+            "s9": 0xf69f39565741,
+            "s10": 0x4aab8344f142
         }
         hex_val = name_map.get(name)
         return hex_val if hex_val else None
 
     def _get_name_by_dpid(self, dpid):
         name_map = {
-            "s1": 0x2e67fb1c3f4a,
-            "s2": 0xaa0ad704974e,
-            "s3": 0xaab0a554e144,
-            "s4": 0x25d98ecd84e,
-            "s5": 0xe26c45724a4e,
-            "s6": 0xaeb5f54b6243,
-            "s7": 0x428ded77364d,
-            "s8": 0x560b24a8a143,
-            "s9": 0xda8ceff6e245,
-            "s10": 0x5e8c84b9c046
+            "s1": 0x2a51c408ed4f,
+            "s2": 0xd6b73a919945,
+            "s3": 0xba70b37fd047,
+            "s4": 0x9a7798e03a4d,
+            "s5": 0x2eb091cbb744,
+            "s6": 0x3687ed1d8946,
+            "s7": 0xa6fae9710143,
+            "s8": 0x8a14cedaae47,
+            "s9": 0xf69f39565741,
+            "s10": 0x4aab8344f142
         }
         reverse_map = {v: k for k, v in name_map.items()}
         return reverse_map.get(dpid, f"unknown({dpid})")

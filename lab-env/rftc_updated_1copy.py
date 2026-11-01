@@ -43,7 +43,7 @@ class RealTimeTrainingComponent:
         tx_error_rate = (tx_errors / (tx_packets + 1)) * 100.0
 
         high_pps_threshold = 4000.0
-        self.logger.info('rx_util: %d, tx_util: %d, rx_drop_rate: %d, tx_drop_rate: %d', rx_util, tx_util, rx_drop_rate, tx_drop_rate)
+        # self.logger.info('rx_util: %d, tx_util: %d, rx_drop_rate: %d, tx_drop_rate: %d', rx_util, tx_util, rx_drop_rate, tx_drop_rate)
 
         # Multi-metric heuristic auto-labeling rule[cite: 2]
         is_congested = (
