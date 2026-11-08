@@ -524,42 +524,40 @@ class EdgeIntelligenceRoute(app_manager.RyuApp):
     def _get_switch_name(self, dpid):
         dpid_hex = f"{dpid:016x}"
         dpid_map = {
-            "000012bb705e754d": "br-ryu-test",
-            "00006a95cb223a46": "br-test",
-            "000002f9b0b2454f": "s2",
-            "0000fa80ebe1194c": "s3",
-            "0000c2b726c53740": "s4",
-            "0000868028d9e64b": "s5",
-            "00002a97c6f41c48": "s6",
-            "000026c5b0a4f34c": "s7"
+            "00006e7fdd946c40": "s1",          # Also acts as br-ryu-test
+            "0000e2e67a8f514a": "s2",
+            "0000da7b95be7a49": "s3",
+            "000036c26081e341": "s4",
+            "0000a6c963ff624c": "s5",
+            "00009a4dd3c4d84f": "s6",
+            "0000b63c33f59145": "s7"
         }
         return dpid_map.get(dpid_hex, f"s{dpid}")
 
     def _get_dpid_by_name(self, name):
         name_map = {
-            "br-ryu-test": 0x12bb705e754d,
-            "br-test": 0x6a95cb223a46,
-            "s2": 0x02f9b0b2454f,
-            "s3": 0xfa80ebe1194c,
-            "s4": 0xc2b726c53740,
-            "s5": 0x868028d9e64b,
-            "s6": 0x2a97c6f41c48,
-            "s7": 0x26c5b0a4f34c
+            "br-ryu-test": 0x6e7fdd946c40,
+            "s1": 0x6e7fdd946c40,
+            "s2": 0xe2e67a8f514a,
+            "s3": 0xda7b95be7a49,
+            "s4": 0x36c26081e341,
+            "s5": 0xa6c963ff624c,
+            "s6": 0x9a4dd3c4d84f,
+            "s7": 0xb63c33f59145
         }
         hex_val = name_map.get(name)
         return hex_val if hex_val else None
 
     def _get_name_by_dpid(self, dpid):
-        """Translates an integer DPID back to its name using your existing mapping."""
+        """Translates an integer DPID back to its name using your updated mapping."""
         name_map = {
-            "br-ryu-test": 0x12bb705e754d,
-            "br-test": 0x6a95cb223a46,
-            "s2": 0x02f9b0b2454f,
-            "s3": 0xfa80ebe1194c,
-            "s4": 0xc2b726c53740,
-            "s5": 0x868028d9e64b,
-            "s6": 0x2a97c6f41c48,
-            "s7": 0x26c5b0a4f34c
+            "s1": 0x6e7fdd946c40,
+            "s2": 0xe2e67a8f514a,
+            "s3": 0xda7b95be7a49,
+            "s4": 0x36c26081e341,
+            "s5": 0xa6c963ff624c,
+            "s6": 0x9a4dd3c4d84f,
+            "s7": 0xb63c33f59145
         }
         # Invert the dictionary (value -> key) dynamically
         reverse_map = {v: k for k, v in name_map.items()}

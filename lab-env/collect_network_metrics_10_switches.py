@@ -14,7 +14,7 @@ OUTPUT = Path("network_traffic_metrics_10switches.csv")
 # Full 10-switch topology extracted directly from your OVS dump outputs
 PORTS = {
     "s1": ["v12a", "hostA-sw"],
-    "s2": ["v25b", "v12b", "v23a", "v210a", "v28a"],
+    "s2": ["v12b", "v23a", "v210a", "v28a"],
     "s3": ["v34a", "v23b", "v38a"],
     "s4": ["v64b", "v34b", "v410a", "v47a", "v49a"],
     "s5": ["v25b", "v56a"],

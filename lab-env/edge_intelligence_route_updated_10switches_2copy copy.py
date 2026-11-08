@@ -250,6 +250,7 @@ class EdgeIntelligenceRoute(app_manager.RyuApp):
                     ("s9", 1): "v49b", ("s9", 2): "v69b", ("s9", 3): "hostB9-sw",
                     ("s10", 1): "v210b", ("s10", 2): "v410b"
                 }
+                
                 port_name = port_name_map.get((switch_name, stat.port_no), f"port_{stat.port_no}")
                 key = (dpid, stat.port_no)
 
@@ -276,6 +277,10 @@ class EdgeIntelligenceRoute(app_manager.RyuApp):
                     "rx_mbps": max(0.0, rx_mbps), "tx_mbps": max(0.0, tx_mbps),
                     "rx_pps": max(0.0, rx_pps), "tx_pps": max(0.0, tx_pps),
                 }
+
+                self.logger.warning("##################################################")
+                self.logger.warning("NEW stats_dict: %s", stats_dict)
+                        
 
                 self.rftc.ingest_telemetry(stats_dict, self.features)
 

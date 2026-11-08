@@ -640,47 +640,47 @@ class EdgeIntelligenceRoute(app_manager.RyuApp):
     def _get_switch_name(self, dpid):
         dpid_hex = f"{dpid:016x}"
         dpid_map = {
-            "00002a51c408ed4f": "s1",
-            "0000d6b73a919945": "s2",
-            "0000ba70b37fd047": "s3",
-            "00009a7798e03a4d": "s4",
-            "00002eb091cbb744": "s5",
-            "00003687ed1d8946": "s6",
-            "0000a6fae9710143": "s7",
-            "00008a14cedaae47": "s8",
-            "0000f69f39565741": "s9",
-            "00004aab8344f142": "s10"
+            "0000ae73f7c32b4e": "s1",
+            "0000728acfc9874d": "s2",
+            "000096da8849ce42": "s3",
+            "0000aef6e2bf5e4a": "s4",
+            "0000829b9d497447": "s5",
+            "0000827a9f69124e": "s6",
+            "0000fa600d2aa548": "s7",
+            "00007a4da0027546": "s8",
+            "00001a6518d0254b": "s9",
+            "0000da1faa2ec84d": "s10"
         }
         return dpid_map.get(dpid_hex, f"s{dpid}")
 
     def _get_dpid_by_name(self, name):
         name_map = {
-            "s1": 0x2a51c408ed4f,
-            "s2": 0xd6b73a919945,
-            "s3": 0xba70b37fd047,
-            "s4": 0x9a7798e03a4d,
-            "s5": 0x2eb091cbb744,
-            "s6": 0x3687ed1d8946,
-            "s7": 0xa6fae9710143,
-            "s8": 0x8a14cedaae47,
-            "s9": 0xf69f39565741,
-            "s10": 0x4aab8344f142
+            "s1": 0xae73f7c32b4e,
+            "s2": 0x728acfc9874d,
+            "s3": 0x96da8849ce42,
+            "s4": 0xaef6e2bf5e4a,
+            "s5": 0x829b9d497447,
+            "s6": 0x827a9f69124e,
+            "s7": 0xfa600d2aa548,
+            "s8": 0x7a4da0027546,
+            "s9": 0x1a6518d0254b,
+            "s10": 0xda1faa2ec84d
         }
         hex_val = name_map.get(name)
         return hex_val if hex_val else None
 
     def _get_name_by_dpid(self, dpid):
         name_map = {
-            "s1": 0x2a51c408ed4f,
-            "s2": 0xd6b73a919945,
-            "s3": 0xba70b37fd047,
-            "s4": 0x9a7798e03a4d,
-            "s5": 0x2eb091cbb744,
-            "s6": 0x3687ed1d8946,
-            "s7": 0xa6fae9710143,
-            "s8": 0x8a14cedaae47,
-            "s9": 0xf69f39565741,
-            "s10": 0x4aab8344f142
+            "s1": 0xae73f7c32b4e,
+            "s2": 0x728acfc9874d,
+            "s3": 0x96da8849ce42,
+            "s4": 0xaef6e2bf5e4a,
+            "s5": 0x829b9d497447,
+            "s6": 0x827a9f69124e,
+            "s7": 0xfa600d2aa548,
+            "s8": 0x7a4da0027546,
+            "s9": 0x1a6518d0254b,
+            "s10": 0xda1faa2ec84d
         }
         reverse_map = {v: k for k, v in name_map.items()}
         return reverse_map.get(dpid, f"unknown({dpid})")

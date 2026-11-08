@@ -93,69 +93,69 @@ run_ovs -- --may-exist add-port s4 v49a \
 run_ovs -- --may-exist add-port s6 v69a \
         -- --may-exist add-port s9 v69b
 
-# 6. Create namespaces
-if ! sudo ip netns list | grep -q "sdnA"; then
-    sudo ip netns add sdnA
-fi
-if ! sudo ip netns list | grep -q "sdnB"; then
-    sudo ip netns add sdnB
-fi
+# # 6. Create namespaces
+# if ! sudo ip netns list | grep -q "sdnA"; then
+#     sudo ip netns add sdnA
+# fi
+# if ! sudo ip netns list | grep -q "sdnB"; then
+#     sudo ip netns add sdnB
+# fi
 
-sudo ip netns exec sdnA ip link set lo up
-sudo ip netns exec sdnB ip link set lo up
+# sudo ip netns exec sdnA ip link set lo up
+# sudo ip netns exec sdnB ip link set lo up
 
-# --- Namespace sdnA Setup ---
-sudo ip netns exec sdnA ip link add br-sw type bridge 2>/dev/null || true
-sudo ip netns exec sdnA ip link set br-sw up
-sudo ip netns exec sdnA ip addr flush dev br-sw 2>/dev/null || true
-sudo ip netns exec sdnA ip addr add 192.168.100.1/24 dev br-sw || true
+# # --- Namespace sdnA Setup ---
+# sudo ip netns exec sdnA ip link add br-sw type bridge 2>/dev/null || true
+# sudo ip netns exec sdnA ip link set br-sw up
+# sudo ip netns exec sdnA ip addr flush dev br-sw 2>/dev/null || true
+# sudo ip netns exec sdnA ip addr add 192.168.100.1/24 dev br-sw || true
 
-# Setup hostA <-> s1
-if ! ip link show hostA >/dev/null 2>&1; then
-    sudo ip link add hostA type veth peer name hostA-sw
-    sudo ip link set hostA netns sdnA
-    sudo ip netns exec sdnA ip link set hostA master br-sw
-    sudo ip netns exec sdnA ip link set hostA up
-fi
-sudo ip link set hostA-sw up 2>/dev/null || true
-run_ovs -- --may-exist add-port s1 hostA-sw
+# # Setup hostA <-> s1
+# if ! ip link show hostA >/dev/null 2>&1; then
+#     sudo ip link add hostA type veth peer name hostA-sw
+#     sudo ip link set hostA netns sdnA
+#     sudo ip netns exec sdnA ip link set hostA master br-sw
+#     sudo ip netns exec sdnA ip link set hostA up
+# fi
+# sudo ip link set hostA-sw up 2>/dev/null || true
+# run_ovs -- --may-exist add-port s1 hostA-sw
 
-# Setup hostA8 <-> s8
-if ! ip link show hostA8 >/dev/null 2>&1; then
-    sudo ip link add hostA8 type veth peer name hostA8-sw
-    sudo ip link set hostA8 netns sdnA
-    sudo ip netns exec sdnA ip link set hostA8 master br-sw
-    sudo ip netns exec sdnA ip link set hostA8 up
-fi
-sudo ip link set hostA8-sw up 2>/dev/null || true
-run_ovs -- --may-exist add-port s8 hostA8-sw
+# # Setup hostA8 <-> s8
+# if ! ip link show hostA8 >/dev/null 2>&1; then
+#     sudo ip link add hostA8 type veth peer name hostA8-sw
+#     sudo ip link set hostA8 netns sdnA
+#     sudo ip netns exec sdnA ip link set hostA8 master br-sw
+#     sudo ip netns exec sdnA ip link set hostA8 up
+# fi
+# sudo ip link set hostA8-sw up 2>/dev/null || true
+# run_ovs -- --may-exist add-port s8 hostA8-sw
 
 
-# --- Namespace sdnB Setup ---
-sudo ip netns exec sdnB ip link add br-sw type bridge 2>/dev/null || true
-sudo ip netns exec sdnB ip link set br-sw up
-sudo ip netns exec sdnB ip addr flush dev br-sw 2>/dev/null || true
-sudo ip netns exec sdnB ip addr add 192.168.100.2/24 dev br-sw || true
+# # --- Namespace sdnB Setup ---
+# sudo ip netns exec sdnB ip link add br-sw type bridge 2>/dev/null || true
+# sudo ip netns exec sdnB ip link set br-sw up
+# sudo ip netns exec sdnB ip addr flush dev br-sw 2>/dev/null || true
+# sudo ip netns exec sdnB ip addr add 192.168.100.2/24 dev br-sw || true
 
-# Setup hostB <-> s7
-if ! ip link show hostB >/dev/null 2>&1; then
-    sudo ip link add hostB type veth peer name hostB-sw
-    sudo ip link set hostB netns sdnB
-    sudo ip netns exec sdnB ip link set hostB master br-sw
-    sudo ip netns exec sdnB ip link set hostB up
-fi
-sudo ip link set hostB-sw up 2>/dev/null || true
-run_ovs -- --may-exist add-port s7 hostB-sw
+# # Setup hostB <-> s7
+# if ! ip link show hostB >/dev/null 2>&1; then
+#     sudo ip link add hostB type veth peer name hostB-sw
+#     sudo ip link set hostB netns sdnB
+#     sudo ip netns exec sdnB ip link set hostB master br-sw
+#     sudo ip netns exec sdnB ip link set hostB up
+# fi
+# sudo ip link set hostB-sw up 2>/dev/null || true
+# run_ovs -- --may-exist add-port s7 hostB-sw
 
-# Setup hostB9 <-> s9
-if ! ip link show hostB9 >/dev/null 2>&1; then
-    sudo ip link add hostB9 type veth peer name hostB9-sw
-    sudo ip link set hostB9 netns sdnB
-    sudo ip netns exec sdnB ip link set hostB9 master br-sw
-    sudo ip netns exec sdnB ip link set hostB9 up
-fi
-sudo ip link set hostB9-sw up 2>/dev/null || true
-run_ovs -- --may-exist add-port s9 hostB9-sw
+# # Setup hostB9 <-> s9
+# if ! ip link show hostB9 >/dev/null 2>&1; then
+#     sudo ip link add hostB9 type veth peer name hostB9-sw
+#     sudo ip link set hostB9 netns sdnB
+#     sudo ip netns exec sdnB ip link set hostB9 master br-sw
+#     sudo ip netns exec sdnB ip link set hostB9 up
+# fi
+# sudo ip link set hostB9-sw up 2>/dev/null || true
+# run_ovs -- --may-exist add-port s9 hostB9-sw
 
 echo
 echo "Setup complete! Checking OVS status and bridge connectivity:"
